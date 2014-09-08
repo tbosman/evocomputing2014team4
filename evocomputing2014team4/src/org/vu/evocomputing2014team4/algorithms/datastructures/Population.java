@@ -12,16 +12,22 @@ public class Population implements Iterable<Individual> {
 	}
 	
 	public void add(Individual individual) {
-		//TODO implement
+		individuals.add(individual);
 	}
 	
 	public void addAll(Iterable<Individual> individuals){
 		//TODO implement
+		for(Individual i : individuals) {
+			this.individuals.add(i);
+		}
 	}
 
+	
+	
 	@Override
 	public Iterator<Individual> iterator() {
-		// TODO Implement
-		return null;
+		return individuals.iterator();
 	}
+	
+	
 }

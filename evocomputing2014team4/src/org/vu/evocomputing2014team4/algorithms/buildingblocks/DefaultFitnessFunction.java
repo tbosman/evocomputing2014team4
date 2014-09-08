@@ -12,7 +12,15 @@ public class DefaultFitnessFunction implements FitnessFunction {
 
 	@Override
 	public double fitness(Genome genome) {
+		if (genome.value == null) {
+			throw new Error("value = null");
+		}
+		if ((evaluation == null)) {
+			throw new Error("evaluation = mull");
+		}
+				
 		return (double) evaluation.evaluate(genome.value);
 	}
 
+	
 }

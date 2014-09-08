@@ -71,12 +71,12 @@ public class Genome {
 		public double pi;//maximum rotational param
 		public CrossoverType crossoverType;
 		
-		GenomeBuilder(){
+		public GenomeBuilder(){
 			//TODO init array fields
 			//TODO maybe set some defaults here?
 		}
 		
-		GenomeBuilder(Genome fromGenome){
+		public GenomeBuilder(Genome fromGenome){
 			this.value = fromGenome.value;
 			this.sigma = fromGenome.sigma;
 			this.alpha = fromGenome.alpha;

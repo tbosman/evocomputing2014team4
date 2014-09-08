@@ -10,13 +10,13 @@ public class player4 implements ContestSubmission {
 	ContestEvaluation evaluation_;
 
 	public player4() {
-		algo = new FirstEvolutionaryAlgorithm(0, 0);
+		algo = new FirstEvolutionaryAlgorithm(1024, 3072);
 	}
 
 
 	@Override
 	public void setEvaluation(ContestEvaluation evaluation) {
-		evaluation_ = evaluation;
+		algo.setEvaluation(evaluation);
 		
 	}
 
@@ -28,7 +28,7 @@ public class player4 implements ContestSubmission {
 	@Override
 	public void run() {
 		algo.run();
-	
+		
 	}
 	
 	public static void main(String... args) {
