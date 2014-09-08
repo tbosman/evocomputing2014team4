@@ -39,7 +39,7 @@ public  class RandomSampler {
 		double u1 = getUniform();
 		double u2 = getUniform();
 		double z0 = Math.sqrt(-2*Math.log(u1))*Math.cos(Math.PI*2*u2);
-		return z0;
+		return z0*sigma;
 //		return rdg.nextGaussian(0, sigma); 
 	}
 	/**
