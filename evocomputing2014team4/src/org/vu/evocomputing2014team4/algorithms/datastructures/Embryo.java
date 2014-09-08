@@ -24,6 +24,7 @@ public class Embryo {
 
 	public Individual birth(FitnessFunction fitnessFunction) {
 		double fitness = fitnessFunction.fitness(getGenome());
+//		System.out.println(getGenome().toString() + " - f: " + fitness);
 		return new Individual(getGenome(), fitness);
 	}
 }

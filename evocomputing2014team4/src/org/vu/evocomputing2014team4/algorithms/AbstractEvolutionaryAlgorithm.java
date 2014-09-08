@@ -40,6 +40,7 @@ public abstract class AbstractEvolutionaryAlgorithm {
 	
 	public void setSeed(long seed) {
 		rnd_.setSeed(seed);
+		RandomSampler.setSeed(seed);
 	}
 	
 	public void setEvaluation(ContestEvaluation evaluation) {

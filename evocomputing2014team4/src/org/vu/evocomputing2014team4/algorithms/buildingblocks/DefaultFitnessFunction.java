@@ -19,7 +19,16 @@ public class DefaultFitnessFunction implements FitnessFunction {
 			throw new Error("evaluation = mull");
 		}
 				
-		return (double) evaluation.evaluate(genome.value);
+//		for(int i=0; i<10;i++) {
+//			System.out.print(", "+genome.value[i]);
+//		}
+//		System.out.println(" <- value of genome");
+		Object fitness = evaluation.evaluate(genome.value);
+		if(fitness != null) {
+			return (double) fitness;
+		}else {
+			return 0;
+		}
 	}
 
 	

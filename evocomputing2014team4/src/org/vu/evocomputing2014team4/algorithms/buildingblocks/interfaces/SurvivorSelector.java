@@ -9,5 +9,5 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
  *
  */
 public interface SurvivorSelector {
-	public Population selectSurvivors(Population population);
+	public Population selectSurvivors(Population population, int desiredPopulationSize);
 }
