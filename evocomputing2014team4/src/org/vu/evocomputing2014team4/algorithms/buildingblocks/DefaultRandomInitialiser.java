@@ -17,7 +17,7 @@ public class DefaultRandomInitialiser implements Initialiser {
 	double maxValue = 5; 
 	
 	double[][] defaultAlpha = new double[10][10];
-	double _defaultSigma = 0.1;
+	double _defaultSigma = 0.4;
 	double[] defaultSigma; 
 	double defaultEpsilon0 = 0.01; 
 	double defaultEpsilonMax = 0.5	;
