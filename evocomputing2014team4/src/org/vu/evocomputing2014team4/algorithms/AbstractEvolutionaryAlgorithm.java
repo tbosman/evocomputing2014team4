@@ -6,7 +6,7 @@ import java.util.Random;
 import org.vu.contest.ContestEvaluation;
 /**
  * Abstract class so that any algorithm submission can be easily done by just changing the classname to be constructed in Team4.java
- * 
+ * Any algo should manage at least population/offspring size and some implementation of Mutator and Breeder
  * @author tbosman
  *
  */
@@ -53,5 +53,6 @@ public abstract class AbstractEvolutionaryAlgorithm {
 	}
 	
 	abstract public void run(); 
+
 	
 }

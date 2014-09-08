@@ -10,7 +10,7 @@ public class player4 implements ContestSubmission {
 	ContestEvaluation evaluation_;
 
 	public player4() {
-		algo = new FirstEvolutionaryAlgorithm();
+		algo = new FirstEvolutionaryAlgorithm(0, 0);
 	}
 
 
