@@ -1,0 +1,25 @@
+------------------------------------
+# Thomas Bosman 9/9 
+==========================
+
+
+Settings as of 9/9 16:44 
+Popsize = eval/1000 or eval/2000, crossover = 0.25 local_discrete, 0.25 local intermediary, 0.5 
+function1 4.9924686364239115
+function2 0.14282775568793896
+function3 6.796286950684296
+
+------------------------------------
+# Thomas Bosman 9/9 
+==========================
+Settings as of 9/9 16:44 
+Popsize = eval/1000 or eval/2000, crossover = 0.25 local_discrete, 0.25 local intermediary, 0.5 none
+NEW: if function is irregular, survival is mu+lambda   
+function1
+0.7377455826226342
+function2
+0.02500366581518021
+function3
+6.796286950684296
+
+Decline of function1 and function 2, function 3 no change. Function 1 and function seem to be irregular.  
