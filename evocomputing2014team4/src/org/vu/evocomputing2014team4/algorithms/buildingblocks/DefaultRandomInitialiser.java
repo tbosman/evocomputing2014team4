@@ -17,10 +17,10 @@ public class DefaultRandomInitialiser implements Initialiser {
 	double maxValue = 5; 
 	
 	double[][] defaultAlpha = new double[10][10];
-	double _defaultSigma = 0.4;
+	double _defaultSigma = 0.5;
 	double[] defaultSigma; 
-	double defaultEpsilon0 = 0.01; 
-	double defaultEpsilonMax = 0.5	;
+	public double defaultEpsilon0 = 0.01; 
+	public double defaultEpsilonMax = 1	;
 	double defaultTau1 = 0.5;
 	double defaultTau2 = 0.01;
 	double defaultTauPrime = 0.05; 
@@ -61,6 +61,17 @@ public class DefaultRandomInitialiser implements Initialiser {
 		}else {
 			tauUsed = defaultTau2;
 		}
+		
+		CrossoverType crossoverType;
+		if(RandomSampler.getUniform() < 0.25) {
+			crossoverType = CrossoverType.LOCAL_INTERMEDIARY;
+		}else if(RandomSampler.getUniform() < 0.33) {
+			crossoverType = CrossoverType.LOCAL_DISCRETE;
+		}else {
+			crossoverType = CrossoverType.NONE;
+		}
+		
+		
 		Genome genome = new Genome.GenomeBuilder().			
 				setValue(value).
 				setAlpha(defaultAlpha).
