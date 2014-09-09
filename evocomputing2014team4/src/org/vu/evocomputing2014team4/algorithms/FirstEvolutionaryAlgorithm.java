@@ -46,30 +46,37 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
 		int iteration = 1;
 		while(evalsLeft > 0) {
+			
+			
 			Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
-
 
 			embryos = mutateAll(embryos);
 			Population newPopulation = raiseAll(embryos);
 
+			
+			
+			KMeansClustering clusterer = new KMeansClustering(50);
+			
+			List<Cluster> clusters = clusterer.findClusters(newPopulation);
 
-
+//			System.out.println(clusters);
+			
+			
+			int numClusters = 10; 
+			
+			boolean useHeuristicClusteringNumber = true; 
+			if(useHeuristicClusteringNumber) {
+				numClusters = 1+(evalsLeft/evals)*offspringSize/2;
+			}
+			
+			if(isMultimodal() || !isRegular()) {
+				survivorSelector = new KMeansClusteringSelector(numClusters);
+			}
+			
 			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
 
-//			if(isMultimodal()){
-//
-//				int numElite = 4; 
-//				Collections.sort(currentPopulation);
-//				for(int i =0; i<numElite;i++) {
-//					newPopulation.add(currentPopulation.get(i));
-//				}
-//			}
 			
-//			KMeansClustering clusterer = new KMeansClustering(10);
-//			
-//			List<Cluster> clusters = clusterer.findClusters(newPopulation);
-//
-//			System.out.println(clusters);
+
 			
 			currentPopulation = newPopulation;
 			evalsLeft -= offspringSize;
@@ -105,20 +112,24 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		this.fitnessFunction = new DefaultFitnessFunction(evaluation_);
 		DefaultRandomInitialiser initialiser = new DefaultRandomInitialiser(fitnessFunction);
 		this.evalsLeft = this.evals;
+	
+		
 		
 		if(isMultimodal()) {
 			initialiser.defaultEpsilon0 = 0.1;
 		}
 		
 		this.initialiser = initialiser;
+		
+	
 
 		//Calc pop/offspring size
 		if(isMultimodal()) {
-			this.populationSize = getEvals()/1000;
+			this.populationSize = getEvals()/2000;
 		}else {
 			this.populationSize = getEvals()/2000;
 		}
-		this.offspringSize = 5*this.populationSize;
+		this.offspringSize = 4*this.populationSize;
 	}
 
 	@Override
