@@ -12,7 +12,24 @@ public class DefaultFitnessFunction implements FitnessFunction {
 
 	@Override
 	public double fitness(Genome genome) {
-		return (double) evaluation.evaluate(genome.value);
+		if (genome.value == null) {
+			throw new Error("value = null");
+		}
+		if ((evaluation == null)) {
+			throw new Error("evaluation = mull");
+		}
+				
+//		for(int i=0; i<10;i++) {
+//			System.out.print(", "+genome.value[i]);
+//		}
+//		System.out.println(" <- value of genome");
+		Object fitness = evaluation.evaluate(genome.value);
+		if(fitness != null) {
+			return (double) fitness;
+		}else {
+			return 0;
+		}
 	}
 
+	
 }

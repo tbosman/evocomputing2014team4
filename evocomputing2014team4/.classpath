@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="main/java/|main/resources/" kind="src" path="src"/>
+	<classpathentry excluding="main/java/|main/resources/|commons-math3-3/3-src/src/main/java/|commons-math3-3.3-src/src/main/java/" kind="src" path="src"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry excluding="lib/|src/|src/main/java/|src/main/resources/" kind="src" path=""/>

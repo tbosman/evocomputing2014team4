@@ -40,6 +40,7 @@ public abstract class AbstractEvolutionaryAlgorithm {
 	
 	public void setSeed(long seed) {
 		rnd_.setSeed(seed);
+		RandomSampler.setSeed(seed);
 	}
 	
 	public void setEvaluation(ContestEvaluation evaluation) {
@@ -50,7 +51,15 @@ public abstract class AbstractEvolutionaryAlgorithm {
 		separable = Boolean.parseBoolean(props.getProperty("Separable"));
 		evals = Integer.parseInt(props.getProperty("Evaluations"));
 		
+		onSetEvaluation();
+		
 	}
+	/**
+	 * This method is called at the end of the setEvaluation method. 
+	 * Because evaluation class is not known at construction, 
+	 * add any initialising code that depends on the contestevaluation class here
+	 */
+	abstract public void onSetEvaluation(); 
 	
 	abstract public void run(); 
 

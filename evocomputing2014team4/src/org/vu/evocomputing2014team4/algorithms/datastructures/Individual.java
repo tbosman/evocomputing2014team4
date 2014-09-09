@@ -14,7 +14,12 @@ public class Individual implements Comparable<Individual>{
 	}
 	@Override
 	public int compareTo(Individual o) {
-		return (int) (this.fitness - o.fitness);
+		return  (int) Math.signum((this.fitness - o.fitness));
+	}
+	
+	
+	public String toString() {
+		return genome.toString() + " - f: " + fitness;
 	}
 
 }
