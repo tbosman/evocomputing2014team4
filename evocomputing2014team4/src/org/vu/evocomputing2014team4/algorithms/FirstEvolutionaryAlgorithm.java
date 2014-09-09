@@ -53,14 +53,14 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
 
-			if(isMultimodal()){
-
-				int numElite = 4; 
-				Collections.sort(currentPopulation);
-				for(int i =0; i<numElite;i++) {
-					newPopulation.add(currentPopulation.get(i));
-				}
-			}
+//			if(isMultimodal()){
+//
+//				int numElite = 4; 
+//				Collections.sort(currentPopulation);
+//				for(int i =0; i<numElite;i++) {
+//					newPopulation.add(currentPopulation.get(i));
+//				}
+//			}
 
 			currentPopulation = newPopulation;
 			evalsLeft -= offspringSize;
@@ -94,12 +94,22 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	}
 	private void init() {
 		this.fitnessFunction = new DefaultFitnessFunction(evaluation_);
-		this.initialiser = new DefaultRandomInitialiser(fitnessFunction);
+		DefaultRandomInitialiser initialiser = new DefaultRandomInitialiser(fitnessFunction);
 		this.evalsLeft = this.evals;
+		
+		if(isMultimodal()) {
+			initialiser.defaultEpsilon0 = 0.1;
+		}
+		
+		this.initialiser = initialiser;
 
 		//Calc pop/offspring size
-		this.populationSize = getEvals()/100;
-		this.offspringSize = 2*this.populationSize;
+		if(isMultimodal()) {
+			this.populationSize = getEvals()/2000;
+		}else {
+			this.populationSize = getEvals()/2000;
+		}
+		this.offspringSize = 5*this.populationSize;
 	}
 
 	@Override

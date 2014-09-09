@@ -32,8 +32,12 @@ public class DefaultMutator implements Mutator {
 		for(int i=0; i < genome.value.length; i++) {
 			 double randomSamp = RandomSampler.getGaussian(newSigma[i]);
 			newValue[i] =  genome.value[i] + randomSamp;
-			while(newValue[i] < -5 || newValue[i] > 5) {//Wrap around at the edges 
-				newValue[i] -= 10*Math.signum(newValue[i]);
+//			while(newValue[i] < -5 || newValue[i] > 5) {//Wrap around at the edges 
+//				newValue[i] -= 10*Math.signum(newValue[i]);
+//			}
+			if(Math.abs(newValue[i]) > 5) {
+				double outOfBoundary = Math.abs(newValue[i]) - 5;//'Bounce' of the walls
+				newValue[i] = Math.signum(newValue[i])*(5 - outOfBoundary);
 			}
 			
 		}

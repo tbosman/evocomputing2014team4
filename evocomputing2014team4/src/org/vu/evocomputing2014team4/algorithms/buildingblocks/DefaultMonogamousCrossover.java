@@ -1,5 +1,6 @@
 package org.vu.evocomputing2014team4.algorithms.buildingblocks;
 
+import org.vu.evocomputing2014team4.algorithms.RandomSampler;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.MonogamousCrossover;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Embryo;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
@@ -25,8 +26,7 @@ public class DefaultMonogamousCrossover implements MonogamousCrossover {
 		return value;
 	}
 	
-	@Override
-	public Embryo mate(Individual mother, Individual father) {
+	private Embryo average(Individual mother, Individual father) {
 		double value[] = averageArrays(mother.genome.value, father.genome.value);
 		double sigma[] = averageArrays(mother.genome.sigma, father.genome.sigma);
 		Genome newGenome = new Genome.GenomeBuilder(mother.genome).
@@ -34,6 +34,45 @@ public class DefaultMonogamousCrossover implements MonogamousCrossover {
 				setSigma(sigma).
 				createGenome();
 		return new Embryo(newGenome);
+	}
+	
+	private Embryo discrete(Individual mother, Individual father) {
+		double value[] = new double[10];
+		double sigma[] = new double[10];
+		for(int i=0;i<10;i++) {
+			if(RandomSampler.getUniform() < 0.5) {
+				value[i] = mother.genome.value[i];
+			}else {
+				value[i] = father.genome.value[i];
+			}
+			
+			if(RandomSampler.getUniform() < 0.5) {
+				sigma[i] = mother.genome.sigma[i];
+			}else {
+				sigma[i] = father.genome.sigma[i];
+			}		
+		}
+		
+		Genome newGenome = new Genome.GenomeBuilder(mother.genome).
+				setValue(value).
+				setSigma(sigma).
+				createGenome();
+		return new Embryo(newGenome);
+	}
+	
+	@Override
+	public Embryo mate(Individual mother, Individual father) {
+		
+		switch(mother.genome.crossoverType) {
+		case LOCAL_INTERMEDIARY:
+			return average(mother, father);
+		case LOCAL_DISCRETE:
+			return discrete(mother, father);
+		default:
+			return new Embryo(mother.genome);	
+		}
+		
+		
 	}
 
 }

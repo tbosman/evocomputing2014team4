@@ -30,7 +30,7 @@ public class SimulateTestFunction {
 	}
 	
 	public void start() { 
-		AckleyEvaluation evaluation = new AckleyEvaluation();
+		AckleyEvaluationMoved evaluation = new AckleyEvaluationMoved();
 		evaluation.simulate = true; 
 		this.evaluation_ = evaluation;
 		
