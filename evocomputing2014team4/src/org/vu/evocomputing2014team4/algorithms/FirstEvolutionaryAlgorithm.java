@@ -19,6 +19,8 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private Mutator mutator; 
 	private int evalsLeft;
 
+	private boolean addOldGeneration = false; 
+	
 
 	private int TOURNAMENT_SIZE = 10;
 
@@ -53,6 +55,10 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
 
+			if(addOldGeneration) {
+				newPopulation.addAll(currentPopulation);
+			}
+			
 //			if(isMultimodal()){
 //
 //				int numElite = 4; 
@@ -109,6 +115,11 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}else {
 			this.populationSize = getEvals()/2000;
 		}
+		
+		if(!isRegular()) {
+			addOldGeneration = true;
+		}
+		
 		this.offspringSize = 5*this.populationSize;
 	}
 
