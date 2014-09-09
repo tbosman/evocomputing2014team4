@@ -100,9 +100,9 @@ public class Genome {
 		}
 
 		public GenomeBuilder(Genome fromGenome){
-			this.value = fromGenome.value;
-			this.sigma = fromGenome.sigma;
-			this.alpha = fromGenome.alpha;
+			this.value = fromGenome.value.clone();
+			this.sigma = fromGenome.sigma.clone();
+			this.alpha = fromGenome.alpha.clone();
 			this.tau = fromGenome.tau;
 			this.tauPrime = fromGenome.tauPrime;
 			this.beta = fromGenome.beta;

@@ -10,7 +10,7 @@ import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.Fitness
  * @author tbosman
  *
  */
-public class Embryo {
+public class Embryo implements GenomeCarrier{
 	private Genome genome; 
 	public Embryo(Genome genome) {		
 		this.setGenome(genome); 

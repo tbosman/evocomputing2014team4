@@ -3,10 +3,13 @@ package org.vu.evocomputing2014team4.algorithms;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.*;
+import org.vu.evocomputing2014team4.algorithms.buildingblocks.KMeansClustering.Cluster;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.*;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Embryo;
+import org.vu.evocomputing2014team4.algorithms.datastructures.GenomeCarrier;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Individual;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
 
@@ -61,7 +64,13 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 //					newPopulation.add(currentPopulation.get(i));
 //				}
 //			}
-
+			
+//			KMeansClustering clusterer = new KMeansClustering(10);
+//			
+//			List<Cluster> clusters = clusterer.findClusters(newPopulation);
+//
+//			System.out.println(clusters);
+			
 			currentPopulation = newPopulation;
 			evalsLeft -= offspringSize;
 
@@ -105,7 +114,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 		//Calc pop/offspring size
 		if(isMultimodal()) {
-			this.populationSize = getEvals()/2000;
+			this.populationSize = getEvals()/1000;
 		}else {
 			this.populationSize = getEvals()/2000;
 		}
