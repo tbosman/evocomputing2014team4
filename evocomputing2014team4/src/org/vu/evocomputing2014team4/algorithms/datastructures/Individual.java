@@ -4,9 +4,14 @@ package org.vu.evocomputing2014team4.algorithms.datastructures;
  * @author tbosman
  *
  */
-public class Individual implements Comparable<Individual>{
+public class Individual implements Comparable<Individual>, GenomeCarrier{
 
 	public final Genome genome; 
+	public Genome getGenome() {
+		return genome;
+	}
+
+
 	public final double fitness;
 	public Individual(Genome genome, double fitness) {
 		this.genome = genome; 

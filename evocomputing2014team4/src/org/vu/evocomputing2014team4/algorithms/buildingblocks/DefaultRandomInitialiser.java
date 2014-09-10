@@ -27,6 +27,9 @@ public class DefaultRandomInitialiser implements Initialiser {
 	double defaultBeta = 0.01;
 	double defaultPi = 0.01;
 	
+	public boolean defaultCrossoverSet = false;
+	
+	public CrossoverType defaultCrossover = CrossoverType.NONE; 
 	
 	public DefaultRandomInitialiser(FitnessFunction fitnessFunction) {
 		this.fitnessFunction = fitnessFunction;
@@ -62,15 +65,19 @@ public class DefaultRandomInitialiser implements Initialiser {
 			tauUsed = defaultTau2;
 		}
 		
-		CrossoverType crossoverType;
-		if(RandomSampler.getUniform() < 0.25) {
-			crossoverType = CrossoverType.LOCAL_INTERMEDIARY;
-		}else if(RandomSampler.getUniform() < 0.33) {
-			crossoverType = CrossoverType.LOCAL_DISCRETE;
-		}else {
-			crossoverType = CrossoverType.NONE;
-		}
 		
+		CrossoverType crossoverType;
+		if(defaultCrossoverSet) {
+			crossoverType = this.defaultCrossover;
+		}else {
+			if(RandomSampler.getUniform() < 0.25) {
+				crossoverType = CrossoverType.LOCAL_INTERMEDIARY;
+			}else if(RandomSampler.getUniform() < 0.33) {
+				crossoverType = CrossoverType.LOCAL_DISCRETE;
+			}else {
+				crossoverType = CrossoverType.NONE;
+			}
+		}
 		
 		Genome genome = new Genome.GenomeBuilder().			
 				setValue(value).

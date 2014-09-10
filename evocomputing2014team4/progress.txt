@@ -1,0 +1,63 @@
+------------------------------------
+# Thomas Bosman 9/9 
+==========================
+
+
+Settings as of 9/9 16:44 
+Popsize = eval/1000 or eval/2000, crossover = 0.25 local_discrete, 0.25 local intermediary, 0.5 
+function1 4.9924686364239115
+function2 0.14282775568793896
+function3 6.796286950684296
+
+------------------------------------
+# Thomas Bosman 9/9 
+==========================
+Settings as of 9/9 16:44 
+Popsize = eval/1000 or eval/2000, crossover = 0.25 local_discrete, 0.25 local intermediary, 0.5 none
+NEW: if function is irregular, survival is mu+lambda   
+function1
+0.7377455826226342
+function2
+0.02500366581518021
+function3
+6.796286950684296
+
+Decline of function1 and function 2, function 3 no change. Function 1 and function seem to be irregular.  
+
+
+------------------------------------
+# Thomas Bosman 10/9 
+==========================
+State of project as of 9/9 22:44 
+With kmeans cluster survivor selector (was not in commit sorry)
+#SCORE 
+function1 9.135145298217214
+function2 0.0368317817913006
+function3 8.16681046856626
+
+------------------------------------
+# Thomas Bosman 10/9 
+==========================
+State as of 10/9 1:44
+Changed : if( !isRegular && isSeparable) 
+ - use mu+lambda survival 
+ 
+#score# 
+function1 8.418557851360736
+function2 0.0368317817913006 
+function3 8.16681046856626
+
+Only 1 has changed so function1 is irregular and separable 
+ERGO function 2 is irregular and not separable
+------------------------------------
+# Thomas Bosman 10/9 
+==========================
+State as of 10/9 16:44
+Changed : if( !isRegular && !isSeparable) 
+ - use mu+lambda survival 
+ - local discrete crossover 
+ #score#
+function1 9.135145298217214
+function2 0.12926881848677232
+function3 8.16681046856626
+
