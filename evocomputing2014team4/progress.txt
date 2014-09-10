@@ -49,3 +49,15 @@ function3 8.16681046856626
 
 Only 1 has changed so function1 is irregular and separable 
 ERGO function 2 is irregular and not separable
+------------------------------------
+# Thomas Bosman 10/9 
+==========================
+State as of 10/9 16:44
+Changed : if( !isRegular && !isSeparable) 
+ - use mu+lambda survival 
+ - local discrete crossover 
+ #score#
+function1 9.135145298217214
+function2 0.12926881848677232
+function3 8.16681046856626
+
