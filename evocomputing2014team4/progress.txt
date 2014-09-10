@@ -29,7 +29,7 @@ Decline of function1 and function 2, function 3 no change. Function 1 and functi
 # Thomas Bosman 10/9 
 ==========================
 State of project as of 9/9 22:44 
-With kmeans cluster survivor selector
+With kmeans cluster survivor selector (was not in commit sorry)
 #SCORE 
 function1 9.135145298217214
 function2 0.0368317817913006
@@ -44,7 +44,8 @@ Changed : if( !isRegular && isSeparable)
  
 #score# 
 function1 8.418557851360736
-function2 8.16681046856626
-function3 0.0368317817913006
+function2 0.0368317817913006 
+function3 8.16681046856626
 
-Only 1 has changed so function1 is irregular and separable
+Only 1 has changed so function1 is irregular and separable 
+ERGO function 2 is irregular and not separable
