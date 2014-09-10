@@ -30,7 +30,7 @@ public class SimulateTestFunction {
 	}
 	
 	public void start() { 
-		MichalewiczEvaluation evaluation = new MichalewiczEvaluation();
+		BitShiftEvaluation evaluation = new BitShiftEvaluation();
 		evaluation.simulate = true; 
 		this.evaluation_ = evaluation;
 		

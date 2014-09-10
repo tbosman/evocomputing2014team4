@@ -27,8 +27,9 @@ public class DefaultRandomInitialiser implements Initialiser {
 	double defaultBeta = 0.01;
 	double defaultPi = 0.01;
 	
-	public boolean noCrossover = false;
+	public boolean defaultCrossoverSet = false;
 	
+	public CrossoverType defaultCrossover = CrossoverType.NONE; 
 	
 	public DefaultRandomInitialiser(FitnessFunction fitnessFunction) {
 		this.fitnessFunction = fitnessFunction;
@@ -66,8 +67,8 @@ public class DefaultRandomInitialiser implements Initialiser {
 		
 		
 		CrossoverType crossoverType;
-		if(noCrossover) {
-			crossoverType = CrossoverType.NONE;
+		if(defaultCrossoverSet) {
+			crossoverType = this.defaultCrossover;
 		}else {
 			if(RandomSampler.getUniform() < 0.25) {
 				crossoverType = CrossoverType.LOCAL_INTERMEDIARY;

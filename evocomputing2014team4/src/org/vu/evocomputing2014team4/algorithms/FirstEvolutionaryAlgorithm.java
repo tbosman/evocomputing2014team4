@@ -12,6 +12,7 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Embryo;
 import org.vu.evocomputing2014team4.algorithms.datastructures.GenomeCarrier;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Individual;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
+import org.vu.evocomputing2014team4.algorithms.datastructures.Genome.CrossoverType;
 
 public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
@@ -22,6 +23,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private Mutator mutator; 
 	private int evalsLeft;
 
+	boolean muPlusLambda = false; 
 
 	private int TOURNAMENT_SIZE = 10;
 
@@ -73,6 +75,10 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 				survivorSelector = new KMeansClusteringSelector(numClusters);
 			}
 			
+			if(muPlusLambda) {
+				newPopulation.addAll(currentPopulation);
+			}
+			
 			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
 
 			
@@ -113,6 +119,12 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		DefaultRandomInitialiser initialiser = new DefaultRandomInitialiser(fitnessFunction);
 		this.evalsLeft = this.evals;
 	
+		
+		if(!isRegular() && isSeparable()) {
+			initialiser.defaultCrossover = CrossoverType.LOCAL_DISCRETE;
+			initialiser.defaultCrossoverSet = true;
+			muPlusLambda = true;
+		}
 		
 		
 		if(isMultimodal()) {
