@@ -81,7 +81,17 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			
 			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
 
-			
+			//----elite
+			if(muPlusLambda) {
+				Collections.sort(currentPopulation);
+				int numElite = 1;
+				for(int i=0;i<numElite;i++) {
+					if(!newPopulation.contains(currentPopulation.get(i)))
+						newPopulation.add(currentPopulation.get(i));
+				}
+					
+				
+			}
 
 			
 			currentPopulation = newPopulation;
@@ -136,10 +146,10 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	
 
 		//Calc pop/offspring size
-		if(isMultimodal()) {
-			this.populationSize = getEvals()/2000;
+		if(isMultimodal() || !isRegular()) {
+			this.populationSize = getEvals()/1000;
 		}else {
-			this.populationSize = getEvals()/2000;
+			this.populationSize = getEvals()/2000;		
 		}
 		this.offspringSize = 4*this.populationSize;
 	}
