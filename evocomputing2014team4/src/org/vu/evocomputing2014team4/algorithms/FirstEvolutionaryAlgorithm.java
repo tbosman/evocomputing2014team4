@@ -123,7 +123,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		if(!isRegular() && isSeparable()) {
 			initialiser.defaultCrossover = CrossoverType.LOCAL_DISCRETE;
 			initialiser.defaultCrossoverSet = true;
-			muPlusLambda = true;
+			//muPlusLambda = true;
 		}
 		
 		
