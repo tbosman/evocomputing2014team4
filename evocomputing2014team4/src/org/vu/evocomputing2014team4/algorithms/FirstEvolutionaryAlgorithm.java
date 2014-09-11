@@ -146,10 +146,10 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	
 
 		//Calc pop/offspring size
-		if(isMultimodal() || !isRegular()) {
-			this.populationSize = getEvals()/1000;
+		if(isMultimodal()) {
+			this.populationSize = getEvals()/2000;
 		}else {
-			this.populationSize = getEvals()/2000;		
+			this.populationSize = getEvals()/2500;		
 		}
 		this.offspringSize = 4*this.populationSize;
 	}
