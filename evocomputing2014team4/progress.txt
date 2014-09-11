@@ -82,3 +82,15 @@ unimodal popsize = evals/2500
 function1 8.412192100680482
 function2 0.05923518983016235
 function3 8.16681046856626
+
+------------------------------------
+# Thomas Bosman 11/9 
+==========================
+State as of 11/9 19:44, is commit c285c85
+added covariance adaptive
+added default learning params
+function1 9.998665762156602
+function2 0.03892741824603285
+function3 8.01612381140475
+
+
