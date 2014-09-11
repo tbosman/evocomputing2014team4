@@ -60,4 +60,25 @@ Changed : if( !isRegular && !isSeparable)
 function1 9.135145298217214
 function2 0.12926881848677232
 function3 8.16681046856626
+------------------------------------
+# Thomas Bosman 10/9 
+==========================
+State as of 10/9 22:44
 
+###Score (multimodal popsize -> evals/1000, single elite value for
+function2)
+function1 8.927270844149023
+function2 0.03834375683370441
+function3 8.168353347189006
+
+[ reverted multimodal popsize after this ]
+------------------------------------
+# Thomas Bosman 10/9 
+==========================
+State as of 11/9 10:44
+last edit 
+defaultEpsilon0 > 0.001
+unimodal popsize = evals/2500
+function1 8.412192100680482
+function2 0.05923518983016235
+function3 8.16681046856626
