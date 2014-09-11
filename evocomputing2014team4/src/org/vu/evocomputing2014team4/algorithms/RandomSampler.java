@@ -2,6 +2,7 @@ package org.vu.evocomputing2014team4.algorithms;
 
 import java.util.ArrayList;
 import java.util.Random;
+import Jama.*;
 
 
 /**
@@ -47,8 +48,17 @@ public  class RandomSampler {
 	 * @param covarianceMatrix symmetric nxn covariance matrix 
 	 * @return n-tuple of sample from gaussian (0, covmatrix) distribution
 	 */
-	public static double getMultivariateGaussian(double[][] covarianceMatrix) {
-		return 0;
+	public static double[] getMultivariateGaussian(double[][] covarianceMatrix) {
+		Matrix mC = new Matrix(covarianceMatrix);
+		CholeskyDecomposition chol = new CholeskyDecomposition(mC);
+		
+		Matrix vZ = new Matrix(10, 1);
+		for(int i = 0; i < 10; i++) {
+			vZ.set(i, 1, random.nextGaussian());
+		}
+		
+		Matrix VOut = vZ.times(chol.getL());
+		return VOut.getColumnPackedCopy();
 	}
 	
 	
