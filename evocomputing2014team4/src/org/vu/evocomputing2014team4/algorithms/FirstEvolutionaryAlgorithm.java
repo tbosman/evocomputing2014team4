@@ -181,7 +181,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}else {
 			this.populationSize = getEvals()/2000;		
 		}
-		this.offspringSize = 7*this.populationSize;
+		this.offspringSize = 4*this.populationSize;
 	}
 
 	@Override
