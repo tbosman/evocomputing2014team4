@@ -27,6 +27,9 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 	private int TOURNAMENT_SIZE = 10;
 
+
+	ArrayList<Double> bestList = new ArrayList<Double>();
+
 	public FirstEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
 		this.populationSize = populationSize;
@@ -40,7 +43,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	public void run() {
 		Population currentPopulation = initialiser.initialisePopulation(offspringSize);
 		this.evalsLeft -= offspringSize;
-
+		bestList.add(currentPopulation.getMaximumFitness());
 
 
 		Breeder breeder = new DefaultBreeder();
@@ -48,50 +51,85 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
 		int iteration = 1;
 		while(evalsLeft > 0) {
-			
-			
+
+
 			Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
 
 			embryos = mutateAll(embryos);
 			Population newPopulation = raiseAll(embryos);
 
-			
-			
+
+
 			KMeansClustering clusterer = new KMeansClustering(50);
-			
+
 			List<Cluster> clusters = clusterer.findClusters(newPopulation);
 
-//			System.out.println(clusters);
-			
-			
+			//			System.out.println(clusters);
+
+
 			int numClusters = 10; 
-			
+
 			boolean useHeuristicClusteringNumber = true; 
 			if(useHeuristicClusteringNumber) {
 				numClusters = 1+(evalsLeft/evals)*offspringSize/2;
 			}
-			
-			if(isMultimodal() || !isRegular()) {
+
+			if(isMultimodal() || !isRegular() || true) {
 				survivorSelector = new KMeansClusteringSelector(numClusters);
 			}
 			
-			if(muPlusLambda) {
+			if(muPlusLambda && false) {
 				newPopulation.addAll(currentPopulation);
 			}
-			
+
+			bestList.add(newPopulation.getMaximumFitness());
+
 			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
 
 
-			
+
 			currentPopulation = newPopulation;
 			evalsLeft -= offspringSize;
+
+			adjustTemperature();
 
 			//			System.out.println("Iteration: "+iteration++ +" - best fitness: "+currentPopulation.getMaximumFitness());
 		}
 
 
+		System.out.println("#DBG Best/Temp"+ bestList.get(bestList.size()-1) + " - "+((DefaultMutator)mutator).getTemp());
 	}
 
+	private void adjustTemperature() {
+
+
+		//TODO heat/cool mutator
+		int lookback = 50; 
+		if(bestList.size() >= lookback+1) {
+			boolean worst = true;
+			for(int i=2 ; i<=lookback+1;i++) {
+				if(bestList.get(bestList.size()-1) > bestList.get(bestList.size()-i)) {
+					worst = false;
+				}
+			}
+
+			if(worst) {
+				((DefaultMutator)mutator).heat();
+			}else {
+				((DefaultMutator)mutator).cool();
+			}
+		}
+
+		List<Double> sortList = new ArrayList<Double>();
+		sortList.addAll(bestList);
+		Collections.sort(bestList);
+		double best = sortList.get(sortList.size()-1);
+
+
+		//System.out.println(((DefaultMutator)mutator).getTemp());
+		//		System.out.println("#DBG best"+bestList.get(bestList.size()-1));
+				System.out.println("#DBG Best/Temp"+ best + " - "+((DefaultMutator)mutator).getTemp());
+	}
 	private Population raiseAll(Iterable<Embryo> embryos) {
 		Population  newPopulation = new Population();
 		for(Embryo current : embryos) {
@@ -117,22 +155,25 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		this.fitnessFunction = new DefaultFitnessFunction(evaluation_);
 		DefaultRandomInitialiser initialiser = new DefaultRandomInitialiser(fitnessFunction);
 		this.evalsLeft = this.evals;
-	
+
 		
+		
+		
+
 		if(!isRegular() && !isSeparable()) {
 			initialiser.defaultCrossover = CrossoverType.LOCAL_DISCRETE;
 			initialiser.defaultCrossoverSet = true;
 			muPlusLambda = true;
 		}
-		
-		
+
 		if(isMultimodal()) {
 			initialiser.defaultEpsilon0 = 0.1;
 		}
 		
+
 		this.initialiser = initialiser;
-		
-	
+
+
 
 		//Calc pop/offspring size
 		if(isMultimodal()) {
@@ -140,7 +181,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}else {
 			this.populationSize = getEvals()/2000;		
 		}
-		this.offspringSize = 4*this.populationSize;
+		this.offspringSize = 7*this.populationSize;
 	}
 
 	@Override
