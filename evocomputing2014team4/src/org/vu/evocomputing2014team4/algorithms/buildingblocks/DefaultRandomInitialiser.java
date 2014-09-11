@@ -21,9 +21,13 @@ public class DefaultRandomInitialiser implements Initialiser {
 	double[] defaultSigma; 
 	public double defaultEpsilon0 = 0.001; 
 	public double defaultEpsilonMax = 1	;
-	double defaultTau1 = 0.5;
-	double defaultTau2 = 0.01;
-	double defaultTauPrime = 0.05; 
+//	double defaultTau1 = 0.5;
+//	double defaultTau2 = 0.01;
+//	double defaultTau2 = 0.01;
+//	double defaultTauPrime = 0.05; 
+	double defaultTau1 = 1.0 / Math.sqrt(2*10);//as on slides
+	double defaultTau2 = 2*defaultTau1;//
+	double defaultTauPrime = 1.0 / Math.sqrt(2*Math.sqrt(10)); //as on slides
 	double defaultBeta = 0.087;
 	double defaultPi = Math.PI;
 	
