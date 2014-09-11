@@ -97,7 +97,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}
 
 
-		System.out.println("#DBG Best/Temp"+ bestList.get(bestList.size()-1) + " - "+((DefaultMutator)mutator).getTemp());
+//		System.out.println("#DBG Best/Temp"+ bestList.get(bestList.size()-1) + " - "+((DefaultMutator)mutator).getTemp());
 	}
 
 	private void adjustTemperature() {
@@ -128,7 +128,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 		//System.out.println(((DefaultMutator)mutator).getTemp());
 		//		System.out.println("#DBG best"+bestList.get(bestList.size()-1));
-				System.out.println("#DBG Best/Temp"+ best + " - "+((DefaultMutator)mutator).getTemp());
+//				System.out.println("#DBG Best/Temp"+ best + " - "+((DefaultMutator)mutator).getTemp());
 	}
 	private Population raiseAll(Iterable<Embryo> embryos) {
 		Population  newPopulation = new Population();

@@ -12,8 +12,8 @@ public class DefaultMutator implements Mutator {
 	private double tempRate = 0.01;
 	
 	private double maxTemp = 2;
-
-
+	private double minTemp = 0.75;
+	
 	public DefaultMutator() {
 		// TODO Auto-generated constructor stub
 	}
@@ -57,6 +57,9 @@ public class DefaultMutator implements Mutator {
 
 	public void cool() {
 		temp = temp*Math.exp(-tempRate);
+		if(temp < minTemp) {
+			temp = minTemp;
+		}
 	}
 
 
