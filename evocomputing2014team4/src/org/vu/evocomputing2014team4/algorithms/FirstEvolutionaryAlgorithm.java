@@ -149,7 +149,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		if(isMultimodal()) {
 			this.populationSize = getEvals()/2000;
 		}else {
-			this.populationSize = getEvals()/2000;		
+			this.populationSize = getEvals()/2500;		
 		}
 		this.offspringSize = 4*this.populationSize;
 	}
