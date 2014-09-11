@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="evocomputing2014team4/src/|lib/" kind="src" path=""/>
+	<classpathentry kind="src" path="evocomputing2014team4/src"/>
+	<classpathentry kind="lib" path="evocomputing2014team4/lib/contest.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="D:/Users/Thomas/Documents/Git/evocomputing2014team4/bin/Jama-1.0.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
