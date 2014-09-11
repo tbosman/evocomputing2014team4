@@ -54,10 +54,11 @@ public  class RandomSampler {
 		
 		Matrix vZ = new Matrix(10, 1);
 		for(int i = 0; i < 10; i++) {
-			vZ.set(i, 1, random.nextGaussian());
+			vZ.set(i, 0, random.nextGaussian());
 		}
 		
-		Matrix VOut = vZ.times(chol.getL());
+//		Matrix VOut = vZ.times(chol.getL());
+		Matrix VOut = chol.getL().times(vZ);
 		return VOut.getColumnPackedCopy();
 	}
 	

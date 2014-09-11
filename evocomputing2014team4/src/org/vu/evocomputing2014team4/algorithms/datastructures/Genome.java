@@ -25,7 +25,7 @@ public class Genome {
 
 	final public double[] value;
 	final public double[] sigma; 
-	final public double[][] alpha;//rotational params, make this a lower triangular matrix? 
+	final public double[][] alpha;// alpha rotational params, make this a lower triangular matrix? 
 	final public double tau; //global learning rate 
 	final public double tauPrime; // coordinateWise learning rate
 	final public double beta;//rotational learning rate
@@ -77,7 +77,17 @@ public class Genome {
 
 	public double[][] getCovarianceMatrix(){
 		//TODO implement this from sigma and alpha
-		return null;
+		double[][] cov = new double[10][10];
+		for(int i=0; i<10;i++) {
+			for(int j=0; j<10; j++) {
+				if(i==j) {
+					cov[i][j] = sigma[i]*sigma[i];
+				}else {
+					cov[i][j] = 0.5*(sigma[i]*sigma[i] - sigma[j]*sigma[j])*Math.tan(2*alpha[Math.max(i, j)][Math.min(i, j)]);
+				}
+			}
+		}
+		return cov;
 	}
 
 	public static class GenomeBuilder{

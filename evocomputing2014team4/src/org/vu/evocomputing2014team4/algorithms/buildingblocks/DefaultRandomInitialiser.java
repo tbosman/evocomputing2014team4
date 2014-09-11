@@ -24,8 +24,8 @@ public class DefaultRandomInitialiser implements Initialiser {
 	double defaultTau1 = 0.5;
 	double defaultTau2 = 0.01;
 	double defaultTauPrime = 0.05; 
-	double defaultBeta = 0.01;
-	double defaultPi = 0.01;
+	double defaultBeta = 0.087;
+	double defaultPi = Math.PI;
 	
 	public boolean defaultCrossoverSet = false;
 	
@@ -94,11 +94,6 @@ public class DefaultRandomInitialiser implements Initialiser {
 		Individual newIndividual =(new Embryo(genome)).birth(fitnessFunction); 
 		population.add(newIndividual);
 		
-//		System.out.print("Added: ");
-//		for(int i=0; i<10; i++) {
-//			System.out.print(", "+genome.value[i]);
-//		}
-//		System.out.println(" - fitness: "+ newIndividual.fitness);
 	}
 
 }

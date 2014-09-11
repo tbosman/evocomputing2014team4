@@ -6,6 +6,8 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
 
 public class DefaultMutator implements Mutator {
 
+	private boolean useCovariance = true;
+
 	public DefaultMutator() {
 		// TODO Auto-generated constructor stub
 	}
@@ -26,6 +28,30 @@ public class DefaultMutator implements Mutator {
 			}
 		}
 		
+		double newAlpha[][] = new double[10][10];
+		for(int i=0; i<genome.sigma.length; i++) {
+		for(int j=0; j<i; j++) {
+			newAlpha[i][j] = genome.alpha[i][j] + genome.beta*RandomSampler.getGaussian(1);
+			
+			if(Math.abs(newAlpha[i][j]) > genome.pi) {
+				newAlpha[i][j] = newAlpha[i][j]-2*genome.pi*Math.signum(newAlpha[i][j]);
+			}
+		}
+		}
+		
+		
+		if(useCovariance) {
+			double[] randSamp = RandomSampler.getMultivariateGaussian(genome.getCovarianceMatrix());
+			double[] newValue = new double[10];
+			for(int i=0; i < genome.value.length; i++) {
+				newValue[i] =  genome.value[i] + randSamp[i];
+				if(Math.abs(newValue[i]) > 5) {
+					double outOfBoundary = Math.abs(newValue[i]) - 5;//'Bounce' of the walls
+					newValue[i] = Math.signum(newValue[i])*(5 - outOfBoundary);
+				}
+				
+			}
+		}
 		
 		//Mutate values 
 		double[] newValue = new double[10];
