@@ -181,6 +181,23 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}else {
 			this.populationSize = getEvals()/2000;		
 		}
+		
+		
+		int offspringMulti = 4; 
+		// TEST for infering evals per function 
+		if(getEvals() <= 1000) {
+			throw new RuntimeException();//should return 0
+		}else if(getEvals()<=10000) {
+			offspringMulti = 4;//same as last commit
+		}else if(getEvals()<=100000) {
+			offspringMulti = 7;//same as before last commit 
+		}else {
+			this.populationSize = getEvals()/10000;//something completely different
+		}
+		
+		
+		
+		
 		this.offspringSize = 4*this.populationSize;
 	}
 
