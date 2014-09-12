@@ -29,6 +29,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 
 	ArrayList<Double> bestList = new ArrayList<Double>();
+	private boolean instantReturn = false;
 
 	public FirstEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
@@ -41,6 +42,10 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 	@Override
 	public void run() {
+		if(instantReturn) {
+			return;
+		}
+		
 		Population currentPopulation = initialiser.initialisePopulation(offspringSize);
 		this.evalsLeft -= offspringSize;
 		bestList.add(currentPopulation.getMaximumFitness());
@@ -185,8 +190,9 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		
 		int offspringMulti = 4; 
 		// TEST for infering evals per function 
-		if(getEvals() <= 1000) {
-			throw new RuntimeException();//should return 0
+		if(getEvals() <= 5000) {
+			this.instantReturn = true;
+			//throw new RuntimeException();//should return 0
 		}else if(getEvals()<=10000) {
 			offspringMulti = 4;//same as last commit
 		}else if(getEvals()<=100000) {

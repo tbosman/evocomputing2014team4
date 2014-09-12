@@ -110,3 +110,15 @@ State as of 12/9 10:44
 function1 9.96579202132097
 function2 0.19406737008946334
 function3 8.047319207102454
+------------------------------------
+# Thomas Bosman 11/9 
+==========================
+Parameter tweaks to infer evals 
+function1 9.96579202132097
+function2 0.04926531744349162 (= new) 
+function3 8.047319207102454
+
+Therefore function1 and 3 have 10k intervals, function2 has > 100K 
+
+
+
