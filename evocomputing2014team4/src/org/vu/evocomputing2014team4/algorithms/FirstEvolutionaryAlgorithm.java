@@ -190,15 +190,30 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		
 		int offspringMulti = 4; 
 		// TEST for infering evals per function 
-		if(getEvals() <= 5000) {
-			this.instantReturn = true;
-			//throw new RuntimeException();//should return 0
-		}else if(getEvals()<=10000) {
-			offspringMulti = 4;//same as last commit
-		}else if(getEvals()<=100000) {
-			offspringMulti = 7;//same as before last commit 
-		}else {
-			this.populationSize = getEvals()/10000;//something completely different
+//		if(getEvals() <= 5000) {
+//			this.instantReturn = true;
+//			//throw new RuntimeException();//should return 0
+//		}else if(getEvals()<=10000) {
+//			offspringMulti = 4;//same as last commit
+//		}else if(getEvals()<=100000) {
+//			offspringMulti = 7;//same as before last commit 
+//		}else {
+//			this.populationSize = getEvals()/10000;//something completely different
+//		}
+//		
+		
+		if(muPlusLambda) { //Evals at least > 100K 
+			if(getEvals()<= 200000) {
+				this.instantReturn = true;// gets 0 value
+			}else if(getEvals() <= 500000) {
+				offspringMulti = 4; // same as two commits back
+			}else if(getEvals() <= 1000000) {
+				offspringMulti = 7; //same as three commits back
+			}else if(getEvals() <= 5000000) {
+				this.populationSize = getEvals()/10000; //same as last commit
+			}else {
+				this.populationSize = getEvals()/100000; // new
+			}
 		}
 		
 		
