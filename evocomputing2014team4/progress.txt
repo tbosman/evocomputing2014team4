@@ -92,5 +92,21 @@ added default learning params
 function1 9.998665762156602
 function2 0.03892741824603285
 function3 8.01612381140475
-
-
+------------------------------------
+# Thomas Bosman 11/9 
+==========================
+State as of 11/9 22:44,
+with covariacne adaptive REALLY on, heating and cooling, offspring size was accidentily 7*popsize
+###Score ###
+function1 9.96904535295689
+function2 0.02056797927550662
+function3 8.085975246257933
+------------------------------------
+# Thomas Bosman 11/9 
+==========================
+offpsring size 7 -> 4
+State as of 12/9 10:44
+### SCORE ### 
+function1 9.96579202132097
+function2 0.19406737008946334
+function3 8.047319207102454
