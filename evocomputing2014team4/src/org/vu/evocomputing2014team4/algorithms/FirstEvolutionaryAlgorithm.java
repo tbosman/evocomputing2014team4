@@ -30,6 +30,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 	ArrayList<Double> bestList = new ArrayList<Double>();
 	private boolean instantReturn = false;
+	private int startSize;
 
 	public FirstEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
@@ -46,8 +47,8 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			return;
 		}
 		
-		Population currentPopulation = initialiser.initialisePopulation(offspringSize);
-		this.evalsLeft -= offspringSize;
+		Population currentPopulation = initialiser.initialisePopulation(startSize);
+		this.evalsLeft -= startSize;
 		bestList.add(currentPopulation.getMaximumFitness());
 
 
@@ -202,22 +203,23 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 //		}
 //		
 		
-		if(muPlusLambda) { //Evals at least > 100K 
-			if(getEvals()<= 1000000) {
-				this.instantReturn = true;// gets 0 value
-			}else if(getEvals() <= 5000000) {
-				offspringMulti = 4; // same as three commits back
-			}else if(getEvals() <= 100000000) {
-				offspringMulti = 7; //same as four commits back
-			}else if(getEvals() <= 500000000) {
-				this.populationSize = getEvals()/100000; //same as last commit
-			}else {
-				this.populationSize = getEvals()/1000000; // new
-			}
-		}
+//		if(muPlusLambda) { //Evals at least > 100K 
+//			if(getEvals()<= 1000000) {
+//				this.instantReturn = true;// gets 0 value
+//			}else if(getEvals() <= 5000000) {
+//				offspringMulti = 4; // same as three commits back
+//			}else if(getEvals() <= 100000000) {
+//				offspringMulti = 7; //same as four commits back
+//			}else if(getEvals() <= 500000000) {
+//				this.populationSize = getEvals()/100000; //same as last commit
+//			}else {
+//				this.populationSize = getEvals()/1000000; // new
+//			}
+//		}
 		
 		
-		
+		this.populationSize = 5; 
+		this.startSize = getEvals()/10;
 		
 		this.offspringSize = 4*this.populationSize;
 	}
