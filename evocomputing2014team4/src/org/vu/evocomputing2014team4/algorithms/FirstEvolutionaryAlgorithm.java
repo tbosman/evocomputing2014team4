@@ -203,16 +203,16 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 //		
 		
 		if(muPlusLambda) { //Evals at least > 100K 
-			if(getEvals()<= 200000) {
+			if(getEvals()<= 1000000) {
 				this.instantReturn = true;// gets 0 value
-			}else if(getEvals() <= 500000) {
-				offspringMulti = 4; // same as two commits back
-			}else if(getEvals() <= 1000000) {
-				offspringMulti = 7; //same as three commits back
 			}else if(getEvals() <= 5000000) {
-				this.populationSize = getEvals()/10000; //same as last commit
+				offspringMulti = 4; // same as three commits back
+			}else if(getEvals() <= 100000000) {
+				offspringMulti = 7; //same as four commits back
+			}else if(getEvals() <= 500000000) {
+				this.populationSize = getEvals()/100000; //same as last commit
 			}else {
-				this.populationSize = getEvals()/100000; // new
+				this.populationSize = getEvals()/1000000; // new
 			}
 		}
 		

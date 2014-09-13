@@ -132,6 +132,12 @@ function3 8.047319207102454
 
 Thereforec function2 has > 5 mio evalss
 
+##SCORE##
+Parameter tweaks to infer evals 
+function1 9.96579202132097
+function2 0.0(= new) 
+function3 8.047319207102454
 
+Therefore function2 < 1 mio intervals, our >50 mio and pop size too small (Weird)
 
 
