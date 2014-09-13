@@ -120,5 +120,18 @@ function3 8.047319207102454
 
 Therefore function1 and 3 have 10k intervals, function2 has > 100K 
 
+------------------------------------
+# Thomas Bosman 11/9 
+==========================
+##SCORE##
+
+Parameter tweaks to infer evals 
+function1 9.96579202132097
+function2 0.18852198543569315(= new) 
+function3 8.047319207102454
+
+Thereforec function2 has > 5 mio evalss
+
+
 
 
