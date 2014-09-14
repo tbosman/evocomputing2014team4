@@ -48,7 +48,7 @@ public class AckleyEvaluation implements ContestEvaluation
 		for(int i=0; i<10; i++) cosSum += Math.cos(Math.PI*2*x[i]);
 		
 		double out = -20 * Math.exp(-0.2*Math.sqrt(0.1*norm))
-		- Math.exp(-0.1*cosSum)
+		- Math.exp(+0.1*cosSum)
 		+ 20 + Math.E;
 		return out;
 	}
