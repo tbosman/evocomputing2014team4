@@ -20,7 +20,15 @@ public class KMeansClustering {
 	
 	public void initClusters() {
 		clusters = new ArrayList<Cluster>(numClusters);
-		for(int i=0; i<numClusters; i++) clusters.add(new Cluster(randVector()));
+//		for(int i=0; i<numClusters; i++) clusters.add(new Cluster(randVector()));
+		for(int i=0; i<10; i++) {
+			double[] c = new double[10];
+			c[i] = 5;
+			clusters.add(new Cluster(c));
+			c = new double[10];
+			c[i] = -5;
+			clusters.add(new Cluster(c));
+		}
 	}
 	
 	public double[] randVector() {
