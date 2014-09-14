@@ -16,9 +16,9 @@ public class CrossITEvaluation implements ContestEvaluation
 	private final static int EVALS_LIMIT_ = 10000;
 	// The base performance. It is derived by doing random search on the sphere function (see function method) with the same
 	//  amount of evaluations
-	private final static double BASE_ = 4.441155312018846E-5;//= E[] = -4.5736711112154325;
+	private final static double BASE_ = 0.25886844484;// E[] =  -1.6311815550603972;
 	// The minimum of the sphere function
-	private final static double ftarget_= 2.06261218; 
+	private final static double ftarget_= -1.8900499999040925; // At ~ {+-1.4704758} ^10
 	
 	// Best fitness so far
 	private double best_;
@@ -31,7 +31,7 @@ public class CrossITEvaluation implements ContestEvaluation
 	// Properties of the evaluation
 	private String multimodal_ = "true";
 	private String regular_ = "false";
-	private String separable_ = "false";
+	private String separable_ = "true";
 	private String evals_ = Integer.toString(EVALS_LIMIT_);
 
 	public boolean simulate = false;
@@ -45,15 +45,15 @@ public class CrossITEvaluation implements ContestEvaluation
 	{	
 		
 		double out = 0; 
-		double sinX = 0;
+		double sinX = 1;
 		double sqX = 0; 
 		for(int i=0; i<10;i++) {
-			sinX += Math.sin(x[i]);
+			sinX *= Math.sin(x[i]);
 			sqX += x[i]*x[i];
 						
 		}
 		
-		out = Math.pow((Math.abs(sinX*Math.exp(Math.abs(100 - Math.sqrt(sqX)/Math.PI)) )+1), -0.1);
+		out = -0.0001*Math.pow((Math.abs(sinX*Math.exp(Math.abs(100 - Math.sqrt(sqX)/Math.PI)) )+1), 0.1);
 		
 		
 		return out;

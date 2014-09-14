@@ -13,7 +13,7 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
 public class ParameterisedRandomInitialiser implements Initialiser {
 	FitnessFunction fitnessFunction; 
 	private Population population;
-	double minValue = -5;
+	public double minValue = -5;
 	double maxValue = 5; 
 	
 	double[][] defaultAlpha = new double[10][10];
@@ -51,7 +51,7 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 		for(int j=0; j<size;j++) {
 			double[] value = new double[10];
 			for(int i=0;i<10;i++) {
-				value[i] = RandomSampler.getUniform()*10-5;
+				value[i] = RandomSampler.getUniform()*(maxValue-minValue)+minValue;
 			}
 			addNewWithValue(value);
 		}

@@ -34,6 +34,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private int startSize;
 	private boolean addZeroVector = false;
 
+	
+	public boolean verbose = true;
+	
 	public SecondEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
 		this.populationSize = populationSize;
@@ -107,7 +110,10 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 			//			System.out.println("Iteration: "+iteration++ +" - best fitness: "+currentPopulation.getMaximumFitness());
 		}
-
+		
+		if(verbose) {
+			System.out.println("Temp: "+((DefaultMutator)mutator).getTemp());
+		}
 
 //		System.out.println("#DBG Best/Temp"+ bestList.get(bestList.size()-1) + " - "+((DefaultMutator)mutator).getTemp());
 	}
@@ -136,8 +142,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		sortList.addAll(bestList);
 		Collections.sort(bestList);
 		double best = sortList.get(sortList.size()-1);
-
-
+		
+	
+		
 		//System.out.println(((DefaultMutator)mutator).getTemp());
 		//		System.out.println("#DBG best"+bestList.get(bestList.size()-1));
 //				System.out.println("#DBG Best/Temp"+ best + " - "+((DefaultMutator)mutator).getTemp());
@@ -165,7 +172,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	}
 	private void init() {
 		this.fitnessFunction = new DefaultFitnessFunction(evaluation_);
-		DefaultRandomInitialiser initialiser = new DefaultRandomInitialiser(fitnessFunction);
+		ParameterisedRandomInitialiser initialiser = new ParameterisedRandomInitialiser(fitnessFunction);
+		initialiser.minValue = 0; 
+		
 		this.evalsLeft = this.evals;
 
 		
@@ -187,46 +196,16 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 
 
-		//Calc pop/offspring size
-		if(isMultimodal()) {
-			this.populationSize = getEvals()/2000;
-		}else {
-			this.populationSize = getEvals()/2000;		
-		}
+		
 		
 		
 		int offspringMulti = 4; 
-		// TEST for infering evals per function 
-//		if(getEvals() <= 5000) {
-//			this.instantReturn = true;
-//			//throw new RuntimeException();//should return 0
-//		}else if(getEvals()<=10000) {
-//			offspringMulti = 4;//same as last commit
-//		}else if(getEvals()<=100000) {
-//			offspringMulti = 7;//same as before last commit 
-//		}else {
-//			this.populationSize = getEvals()/10000;//something completely different
-//		}
-//		
 		
-//		if(muPlusLambda) { //Evals at least > 100K 
-//			if(getEvals()<= 1000000) {
-//				this.instantReturn = true;// gets 0 value
-//			}else if(getEvals() <= 5000000) {
-//				offspringMulti = 4; // same as three commits back
-//			}else if(getEvals() <= 100000000) {
-//				offspringMulti = 7; //same as four commits back
-//			}else if(getEvals() <= 500000000) {
-//				this.populationSize = getEvals()/100000; //same as last commit
-//			}else {
-//				this.populationSize = getEvals()/1000000; // new
-//			}
-//		}
-		
+		this.populationSize = 5; 
 		
 		if(muPlusLambda) {
 			if(getEvals() <= 1000000) {
-				this.populationSize = 10;
+				this.populationSize = 5;
 			}else {
 				this.populationSize = 20;
 			}
@@ -234,7 +213,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			this.addZeroVector  = true;
 		}
 		
-		this.populationSize = 5; 
+		
+		
+		
 		this.startSize = getEvals()/10;
 		
 		this.offspringSize = 4*this.populationSize;
