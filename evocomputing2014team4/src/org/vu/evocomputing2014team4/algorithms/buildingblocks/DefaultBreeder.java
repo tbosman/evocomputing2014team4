@@ -20,7 +20,8 @@ public class DefaultBreeder implements Breeder {
 
 	@Override
 	public List<Embryo> breed(Population currentGeneration, int numOffspring) {
-		ParentSelector parentSelector = new FitnessProportionateParentSelector();
+//		ParentSelector parentSelector = new FitnessProportionateParentSelector();
+		ParentSelector parentSelector = new RankingParentSelector();
 		Iterator<Individual> parents = parentSelector.selectParentsFrom(currentGeneration, numOffspring*2).iterator();//every child has 2 parents
 		
 		//For each 2 parents do monogamous crossover 

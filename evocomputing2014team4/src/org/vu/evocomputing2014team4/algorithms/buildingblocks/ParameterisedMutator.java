@@ -10,10 +10,10 @@ public class ParameterisedMutator implements Mutator {
 	private boolean useCovariance = true;
 
 	private double temp = 1; 
-	private double tempRate = 0.01;
+	private double tempRate = 0.1;
 
-	private double maxTemp = 2;
-	private double minTemp = 0.75;
+	private double maxTemp = 1;
+	private double minTemp = 0.25;
 	private double crossoverMutationChance= 0; 
 	private CrossoverType[] crossoverTypes = {CrossoverType.LOCAL_INTERMEDIARY, CrossoverType.LOCAL_DISCRETE, CrossoverType.NONE};
 	public ParameterisedMutator() {

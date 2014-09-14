@@ -14,13 +14,13 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 	FitnessFunction fitnessFunction; 
 	private Population population;
 	public double minValue = -5;
-	double maxValue = 5; 
+	public double maxValue = 5; 
 	
 	double[][] defaultAlpha = new double[10][10];
 	double _defaultSigma = 0.1;
 	double[] defaultSigma; 
-	public double defaultEpsilon0 = 0.001; 
-	public double defaultEpsilonMax = 1	;
+	public double defaultEpsilon0 = 0.1; 
+	public double defaultEpsilonMax = 0.5;
 //	double defaultTau1 = 0.5;
 //	double defaultTau2 = 0.01;
 //	double defaultTau2 = 0.01;

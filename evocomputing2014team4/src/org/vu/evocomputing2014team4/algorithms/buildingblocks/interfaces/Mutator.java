@@ -16,6 +16,8 @@ public interface Mutator {
 	public abstract void heat();
 
 	public abstract double getTemp();
+
+	public void setTemp(double d);
 	
 
 }
