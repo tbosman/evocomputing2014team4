@@ -35,7 +35,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private boolean addZeroVector = false;
 
 	
-	public boolean verbose = true;
+	public boolean verbose = false;
 	
 	public SecondEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
@@ -59,6 +59,8 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		if(addZeroVector) {
 			Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
 					setValue(new double[10]).createGenome();
+			currentPopulation.add(new Individual(zeroGenome, fitnessFunction.fitness(zeroGenome)));
+			
 		}
 		
 		Breeder breeder = new DefaultBreeder();
@@ -192,7 +194,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}
 		
 
-		this.initialiser = initialiser;
+		
 
 
 
@@ -209,6 +211,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			}else {
 				this.populationSize = 20;
 			}
+			initialiser.minValue = -5;
 		}else {
 			this.addZeroVector  = true;
 		}
@@ -219,6 +222,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		this.startSize = getEvals()/10;
 		
 		this.offspringSize = 4*this.populationSize;
+		
+		
+		this.initialiser = initialiser;
 	}
 
 	@Override
