@@ -9,6 +9,7 @@ import org.vu.evocomputing2014team4.algorithms.buildingblocks.*;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.KMeansClustering.Cluster;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.*;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Embryo;
+import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
 import org.vu.evocomputing2014team4.algorithms.datastructures.GenomeCarrier;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Individual;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
@@ -31,6 +32,7 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	ArrayList<Double> bestList = new ArrayList<Double>();
 	private boolean instantReturn = false;
 	private int startSize;
+	private boolean addZeroVector = false;
 
 	public FirstEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
@@ -51,7 +53,11 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		this.evalsLeft -= startSize;
 		bestList.add(currentPopulation.getMaximumFitness());
 
-
+		if(addZeroVector) {
+			Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
+					setValue(new double[10]).createGenome();
+		}
+		
 		Breeder breeder = new DefaultBreeder();
 		SurvivorSelector survivorSelector = new TournamentSurvivorSelector(offspringSize/TOURNAMENT_SIZE);
 		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
@@ -217,6 +223,16 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 //			}
 //		}
 		
+		
+		if(muPlusLambda) {
+			if(getEvals() <= 1000000) {
+				this.populationSize = 10;
+			}else {
+				this.populationSize = 20;
+			}
+		}else {
+			this.addZeroVector  = true;
+		}
 		
 		this.populationSize = 5; 
 		this.startSize = getEvals()/10;
