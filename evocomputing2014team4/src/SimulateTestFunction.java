@@ -30,7 +30,7 @@ public class SimulateTestFunction {
 	}
 	
 	public void start() { 
-		BitShiftEvaluation evaluation = new BitShiftEvaluation();
+		MultiCrossEvaluation evaluation = new MultiCrossEvaluation();
 		evaluation.simulate = true; 
 		this.evaluation_ = evaluation;
 		
