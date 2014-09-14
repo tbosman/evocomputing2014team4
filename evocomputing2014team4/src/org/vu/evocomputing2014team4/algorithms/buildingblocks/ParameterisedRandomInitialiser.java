@@ -17,7 +17,7 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 	double maxValue = 5; 
 	
 	double[][] defaultAlpha = new double[10][10];
-	double _defaultSigma = 0.5;
+	double _defaultSigma = 0.1;
 	double[] defaultSigma; 
 	public double defaultEpsilon0 = 0.001; 
 	public double defaultEpsilonMax = 1	;
@@ -33,7 +33,8 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 	
 	public boolean defaultCrossoverSet = false;
 	
-	public CrossoverType defaultCrossover = CrossoverType.NONE; 
+	public CrossoverType defaultCrossover = CrossoverType.NONE;
+	
 	
 	public ParameterisedRandomInitialiser(FitnessFunction fitnessFunction) {
 		this.fitnessFunction = fitnessFunction;
@@ -56,9 +57,9 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 			addNewWithValue(value);
 		}
 		
-		
 		return this.population;
 	}
+	
 	
 	
 	private void addNewWithValue(double[] value) {
@@ -74,13 +75,15 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 		if(defaultCrossoverSet) {
 			crossoverType = this.defaultCrossover;
 		}else {
-			if(RandomSampler.getUniform() < 0.25) {
+			double randSamp = RandomSampler.getUniform();
+			if(randSamp < 0.25) {
 				crossoverType = CrossoverType.LOCAL_INTERMEDIARY;
-			}else if(RandomSampler.getUniform() < 0.33) {
+			}else if(randSamp < 0.5) {
 				crossoverType = CrossoverType.LOCAL_DISCRETE;
 			}else {
 				crossoverType = CrossoverType.NONE;
 			}
+			
 		}
 		
 		Genome genome = new Genome.GenomeBuilder().			
@@ -93,7 +96,7 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 				setSigma(defaultSigma).
 				setTau(tauUsed).
 				setTauPrime(defaultTauPrime).
-				setCrossoverType(CrossoverType.NONE).
+				setCrossoverType(crossoverType).
 				createGenome();
 		Individual newIndividual =(new Embryo(genome)).birth(fitnessFunction); 
 		population.add(newIndividual);

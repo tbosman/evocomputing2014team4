@@ -3,25 +3,34 @@ package org.vu.evocomputing2014team4.algorithms.buildingblocks;
 import org.vu.evocomputing2014team4.algorithms.RandomSampler;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.Mutator;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
+import org.vu.evocomputing2014team4.algorithms.datastructures.Genome.CrossoverType;
 
-public class DefaultMutator implements Mutator {
+public class ParameterisedMutator implements Mutator {
 
 	private boolean useCovariance = true;
 
 	private double temp = 1; 
 	private double tempRate = 0.01;
-	
+
 	private double maxTemp = 2;
 	private double minTemp = 0.75;
-	
-	public DefaultMutator() {
+	private double crossoverMutationChance= 0; 
+	private CrossoverType[] crossoverTypes = {CrossoverType.LOCAL_INTERMEDIARY, CrossoverType.LOCAL_DISCRETE, CrossoverType.NONE};
+	public ParameterisedMutator() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public ParameterisedMutator(double crossoverMutationChance) {
+		this.crossoverMutationChance = crossoverMutationChance;
+	}
+
+	public void setCrossoverMutationChance(double p){
+		this.crossoverMutationChance = p;
+
 	}
 
 
 
-
-	@Override
 	public double getTemp() {
 		return temp;
 	}
@@ -49,7 +58,6 @@ public class DefaultMutator implements Mutator {
 	}
 
 
-	@Override
 	public void heat() {
 		temp = temp * Math.exp(tempRate);
 		if(temp > maxTemp) {
@@ -57,7 +65,6 @@ public class DefaultMutator implements Mutator {
 		}
 	}
 
-	@Override
 	public void cool() {
 		temp = temp*Math.exp(-tempRate);
 		if(temp < minTemp) {
@@ -95,11 +102,12 @@ public class DefaultMutator implements Mutator {
 			}
 		}
 
+		
 
 		double[] newValue = new double[10];
 		if(useCovariance) {
 			double[] randSamp = RandomSampler.getMultivariateGaussian(genome.getCovarianceMatrix());
-
+			
 			for(int i=0; i < genome.value.length; i++) {
 
 				newValue[i] =  genome.value[i] + temp*randSamp[i];
@@ -126,9 +134,17 @@ public class DefaultMutator implements Mutator {
 			}
 		}
 
+		CrossoverType crossoverType; 
+		if(RandomSampler.getUniform() < crossoverMutationChance) {
+			crossoverType = crossoverTypes[RandomSampler.getInt(3)];
+		}else {
+			crossoverType = genome.crossoverType;
+		}
+
 		Genome newGenome = new Genome.GenomeBuilder(genome).
 				setValue(newValue).
 				setSigma(newSigma).
+				setCrossoverType(crossoverType).
 				createGenome();
 
 		return newGenome;

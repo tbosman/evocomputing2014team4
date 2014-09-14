@@ -10,6 +10,12 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
 public interface Mutator {
 
 	public Genome mutate(Genome genome);
+
+	public abstract void cool();
+
+	public abstract void heat();
+
+	public abstract double getTemp();
 	
 
 }

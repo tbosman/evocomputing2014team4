@@ -126,9 +126,9 @@ public class FirstEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			}
 
 			if(worst) {
-				((DefaultMutator)mutator).heat();
+				((Mutator)mutator).heat();
 			}else {
-				((DefaultMutator)mutator).cool();
+				((Mutator)mutator).cool();
 			}
 		}
 

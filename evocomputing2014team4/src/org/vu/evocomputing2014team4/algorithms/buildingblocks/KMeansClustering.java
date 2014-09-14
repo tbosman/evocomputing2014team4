@@ -152,6 +152,13 @@ public class KMeansClustering {
 			}
 		}
 		
+		//init new clusters (if any)
+		if(clusters.size() < numClusters) {
+			int make = numClusters - clusters.size(); 
+			for(int i=0; i<make; i++) {
+				clusters.add(new Cluster(randVector()));
+			}
+		}
 		
 		
 		return clusters;

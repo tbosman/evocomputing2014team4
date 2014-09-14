@@ -37,11 +37,13 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	
 	public boolean verbose = false;
 	
+	private double crossoverTypeMutationChance = 0.1;
+	
 	public SecondEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
 		this.populationSize = populationSize;
 		this.offspringSize = offspringSize;
-		this.mutator = new DefaultMutator();
+		this.mutator = new ParameterisedMutator(crossoverTypeMutationChance);
 
 
 	}
@@ -52,19 +54,20 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			return;
 		}
 		
+		
 		Population currentPopulation = initialiser.initialisePopulation(startSize);
 		this.evalsLeft -= startSize;
 		bestList.add(currentPopulation.getMaximumFitness());
 
-		if(addZeroVector) {
+		if(addZeroVector ) {
 			Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
 					setValue(new double[10]).createGenome();
 			currentPopulation.add(new Individual(zeroGenome, fitnessFunction.fitness(zeroGenome)));
-			
 		}
 		
 		Breeder breeder = new DefaultBreeder();
-		SurvivorSelector survivorSelector = new TournamentSurvivorSelector(offspringSize/TOURNAMENT_SIZE);
+//		SurvivorSelector survivorSelector = new TournamentSurvivorSelector(offspringSize/TOURNAMENT_SIZE);
+		SurvivorSelector survivorSelector = new KMeansClusteringSelector(populationSize);
 		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
 		int iteration = 1;
 		while(evalsLeft > 0) {
@@ -72,7 +75,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 			Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
 
-			embryos = mutateAll(embryos);
+			embryos = mutateAll(embryos, false);
 			Population newPopulation = raiseAll(embryos);
 
 
@@ -88,7 +91,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 			boolean useHeuristicClusteringNumber = true; 
 			if(useHeuristicClusteringNumber) {
-				numClusters = 1+(evalsLeft/evals)*offspringSize/2;
+				numClusters = 1+(evalsLeft/evals)*populationSize;
 			}
 
 			if(isMultimodal() || !isRegular() || true) {
@@ -114,7 +117,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		if(verbose) {
-			System.out.println("Temp: "+((DefaultMutator)mutator).getTemp());
+			System.out.println("Temp: "+mutator.getTemp());
 		}
 
 //		System.out.println("#DBG Best/Temp"+ bestList.get(bestList.size()-1) + " - "+((DefaultMutator)mutator).getTemp());
@@ -134,9 +137,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			}
 
 			if(worst) {
-				((DefaultMutator)mutator).heat();
+				mutator.heat();
 			}else {
-				((DefaultMutator)mutator).cool();
+				mutator.cool();
 			}
 		}
 
@@ -161,14 +164,18 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		return newPopulation;
 	}
 
-	private Iterable<Embryo> mutateAll(Iterable<Embryo> embryos) {
+	private Iterable<Embryo> mutateAll(Iterable<Embryo> embryos, boolean skipCrossover) {
 		ArrayList<Embryo> outEmbryos = new ArrayList<Embryo>();
 		for(Embryo current : embryos) {
-			//			current.setGenome(mutator.mutate(current.getGenome()));
-			//			System.out.println("In mutateall: "+current.getGenome());
-			Embryo newEmbryo = new Embryo(mutator.mutate(current.getGenome()));
+			Embryo newEmbryo;
+			if(!skipCrossover || current.getGenome().crossoverType == CrossoverType.NONE) {
+				newEmbryo = new Embryo(mutator.mutate(current.getGenome()));
+			}else {
+				newEmbryo = current;
+				System.err.println("#DBG: no x/o "+current.getGenome().crossoverType);
+			}
 			outEmbryos.add(newEmbryo);
-			//			System.out.println("In mutateall: "+newEmbryo.getGenome());
+			
 		}
 		return outEmbryos;
 	}
@@ -183,11 +190,11 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		
 		
 
-		if(!isRegular() && !isSeparable()) {
-			initialiser.defaultCrossover = CrossoverType.LOCAL_DISCRETE;
-			initialiser.defaultCrossoverSet = true;
-			muPlusLambda = true;
-		}
+//		if(!isRegular() && !isSeparable()) {
+//			initialiser.defaultCrossover = CrossoverType.LOCAL_DISCRETE;
+//			initialiser.defaultCrossoverSet = true;
+//			muPlusLambda = true;
+//		}
 
 		if(isMultimodal()) {
 			initialiser.defaultEpsilon0 = 0.1;
@@ -203,20 +210,24 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		
 		int offspringMulti = 4; 
 		
-		this.populationSize = 5; 
+		 
 		
-		if(muPlusLambda) {
-			if(getEvals() <= 1000000) {
-				this.populationSize = 5;
-			}else {
-				this.populationSize = 20;
-			}
-			initialiser.minValue = -5;
-		}else {
-			this.addZeroVector  = true;
-		}
+//		if(muPlusLambda) {
+//			if(getEvals() <= 1000000) {
+//				this.populationSize = 5;
+//			}else {
+//				this.populationSize = 20;
+//			}
+//			initialiser.minValue = -5;
+//		}else {
+////			this.addZeroVector  = true;
+//		}
 		
+		this.addZeroVector  = true;
 		
+		this.populationSize = 20;
+		
+		initialiser.minValue = 0;
 		
 		
 		this.startSize = getEvals()/10;

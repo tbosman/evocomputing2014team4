@@ -25,6 +25,7 @@ public class SimulateTestFunction {
 			if(current < min) {
 				min = current;
 			}
+//			System.out.println(current);
 		}
 		return min;
 	}
