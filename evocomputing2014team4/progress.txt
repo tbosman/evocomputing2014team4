@@ -139,5 +139,8 @@ function2 0.0(= new)
 function3 8.047319207102454
 
 Therefore function2 < 1 mio intervals, our >50 mio and pop size too small (Weird)
-
+##SCORE##
+function1 9.98856222460951
+function2 0.12506895955761937
+function3 6.046066519484255
 
