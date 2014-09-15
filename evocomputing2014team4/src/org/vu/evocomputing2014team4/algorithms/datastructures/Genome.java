@@ -2,6 +2,8 @@ package org.vu.evocomputing2014team4.algorithms.datastructures;
 
 import java.util.Formatter;
 
+import org.vu.evocomputing2014team4.Util;
+
 public class Genome {
 
 	/**
@@ -59,9 +61,6 @@ public class Genome {
 		this.pi = pi;
 		this.crossoverType = crossoverType;
 		this.precision = precision;
-		if(precision == 0) {
-			new Exception("#DBG p=0").printStackTrace();
-		}
 	}
 
 	public String toString() {
@@ -131,14 +130,11 @@ public class Genome {
 		}
 
 		public GenomeBuilder setValue(double[] value) {
-			double precision = this.precision;
-			if(precision == 0) {
-				throw new Error("Precision = 0");
-			}
 			double[] fvalue = new double[10];
 			for(int i=0;i<10;i++) {
 				
-				fvalue[i] = Math.round(value[i]*precision)/precision;
+				fvalue[i] = Util.roundNDecimals(value[i], (int) precision);
+//				fvalue[i] = Math.round(value[i]*precision)/precision;
 			}
 			this.value = fvalue;
 			return this;

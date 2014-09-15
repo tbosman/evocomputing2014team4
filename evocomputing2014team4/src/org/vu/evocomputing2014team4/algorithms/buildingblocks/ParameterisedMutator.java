@@ -15,8 +15,9 @@ public class ParameterisedMutator implements Mutator {
 	private double maxTemp = 1;
 	private double minTemp = 0.25;
 	private double crossoverMutationChance= 0; 
-	private double precisionMutationChance = 0.1;
+	private double precisionMutationChance = 0.25;
 	private int minPrecision = 1;
+	private int maxPrecision = 4;
 	
 	private CrossoverType[] crossoverTypes = {CrossoverType.LOCAL_INTERMEDIARY, CrossoverType.LOCAL_DISCRETE, CrossoverType.NONE};
 	public ParameterisedMutator() {
@@ -113,7 +114,7 @@ public class ParameterisedMutator implements Mutator {
 			
 			for(int i=0; i < genome.value.length; i++) {
 
-				newValue[i] =  genome.value[i] + temp*randSamp[i];
+				newValue[i] =  genome.value[i] + temp*randSamp[i];//*Math.pow(0.1, genome.precision-1)
 //				if(Math.abs(newValue[i]) > 5) {
 //					double outOfBoundary = Math.abs(newValue[i]) - 5;//'Bounce' of the walls
 //					newValue[i] = Math.signum(newValue[i])*(5 - outOfBoundary);
@@ -145,8 +146,9 @@ public class ParameterisedMutator implements Mutator {
 		}
 		
 		int precision = genome.precision;
-		if(RandomSampler.getUniform() < precisionMutationChance) {
-			precision = Math.max(genome.precision + (RandomSampler.getInt(3))-1, minPrecision);
+		if(RandomSampler.getUniform() < precisionMutationChance ) {
+			precision = (precision+1)%(maxPrecision);
+//			precision = Math.max(genome.precision + (RandomSampler.getInt(3))-1, minPrecision);
 			
 		}
 

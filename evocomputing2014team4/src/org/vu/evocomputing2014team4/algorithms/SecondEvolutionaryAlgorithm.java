@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.vu.evocomputing2014team4.Util;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.*;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.KMeansClustering.Cluster;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.*;
@@ -35,9 +36,11 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private boolean addZeroVector = false;
 
 
-	public boolean verbose = false;
+	public boolean verbose = true;
 
 	private double crossoverTypeMutationChance = 0.1;
+	
+	private Individual globalBest;
 
 	public SecondEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
@@ -58,6 +61,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		currentPopulation = initialiser.initialisePopulation(startSize);
 		this.evalsLeft -= startSize;
 		bestList.add(currentPopulation.getMaximumFitness());
+		globalBest = (currentPopulation.get(0));
 
 		//			if(addZeroVector ) {
 		//				Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
@@ -71,7 +75,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		
 		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
 		int iteration = 1;
-		while(evalsLeft > 0) {
+		while(fitnessFunction.evalsLeft() > 0) {
 
 
 			Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
@@ -102,13 +106,43 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			evalsLeft -= offspringSize;
 
 			adjustTemperature();
-
+			Collections.sort(currentPopulation);
+			Individual best = currentPopulation.get(currentPopulation.size()-1);
+			if(best.fitness >globalBest.fitness) {
+				globalBest = best;
+			}
+			if(verbose) {
+				
+				
+				System.out.println("#DBG: Precision of best: "+best.genome.precision);
+				System.out.print("#DBG: Sigm of best: ");
+				for(double d : best.genome.sigma) {
+					System.out.print(Util.roundNDecimals(d,3) + ",");
+				}
+				System.out.print("#DBG: Value of best: ");
+				for(double d : best.genome.value) {
+					System.out.print(Util.roundNDecimals(d,best.genome.precision) + ",");
+				}
+				System.out.println();
+			}
 
 
 			//			System.out.println("Iteration: "+iteration++ +" - best fitness: "+currentPopulation.getMaximumFitness());
 		}
 		if(verbose) {
 			System.out.println("Temp: "+mutator.getTemp());
+			System.out.println("#DBG: Precision of Globalbest: "+globalBest.genome.precision);
+			System.out.print("#DBG: Sigm of Gbest: ");
+			for(double d : globalBest.genome.sigma) {
+				System.out.print(Util.roundNDecimals(d,3) + ",");
+			}
+			System.out.print("#DBG: Value of Gbest: ");
+			for(double d : globalBest.genome.value) {
+				System.out.print(Util.roundNDecimals(d,globalBest.genome.precision) + ",");
+			}
+			System.out.println(" #DBG: fitness of Gbest: "+globalBest.fitness);
+		
+			
 		}
 		//		System.out.println("#DBG Best/Temp"+ bestList.get(bestList.size()-1) + " - "+((DefaultMutator)mutator).getTemp());
 	}
@@ -120,7 +154,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		//		int lookback = 5;
 		int lookback = bestList.size()/5;
 		double tol = 0.1;
-		if(bestList.size() >= 5) {
+		if(bestList.size() >= 5 && false) {
 			if(bestList.get(bestList.size()-1)>bestList.get(bestList.size()-2)+tol) {
 				mutator.setTemp(0.1);
 			}	
@@ -179,7 +213,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		return outEmbryos;
 	}
 	private void init() {
-		this.fitnessFunction = new DefaultFitnessFunction(evaluation_);
+		this.fitnessFunction = new HashedFitnessFunction(evaluation_);
 		ParameterisedRandomInitialiser initialiser = new ParameterisedRandomInitialiser(fitnessFunction);
 
 
@@ -196,7 +230,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		//		}
 
 		if(isMultimodal()) {
-			initialiser.defaultEpsilon0 = 0.1;
+			initialiser.defaultEpsilon0 = 0.001;
 		}
 
 

@@ -6,10 +6,13 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
 
 public class DefaultFitnessFunction implements FitnessFunction {
 	ContestEvaluation evaluation;
+	int evalsLeft;
 	public DefaultFitnessFunction(ContestEvaluation evaluation) {
-		this.evaluation = evaluation; 
+		this.evaluation = evaluation;
+		evalsLeft = Integer.parseInt(evaluation.getProperties().getProperty("Evaluations")); 
 	}
 
+	
 	@Override
 	public double fitness(Genome genome) {
 		if (genome.value == null) {
@@ -24,11 +27,18 @@ public class DefaultFitnessFunction implements FitnessFunction {
 //		}
 //		System.out.println(" <- value of genome");
 		Object fitness = evaluation.evaluate(genome.value);
+		evalsLeft--;
 		if(fitness != null) {
 			return (double) fitness;
 		}else {
 			return 0;
 		}
+	}
+
+
+	@Override
+	public int evalsLeft() {
+		return evalsLeft;
 	}
 
 	

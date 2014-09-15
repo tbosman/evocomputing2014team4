@@ -31,7 +31,7 @@ public class SimulateTestFunction {
 	}
 	
 	public void start() { 
-		EasomMioEvaluation evaluation = new EasomMioEvaluation();
+		AckleyEvaluationPI evaluation = new AckleyEvaluationPI();
 		evaluation.simulate = true; 
 		this.evaluation_ = evaluation;
 		

@@ -87,7 +87,7 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 		}
 		
 		Genome genome = new Genome.GenomeBuilder().		
-				setPrecision(RandomSampler.getInt(10)+5).
+				setPrecision(0).
 				setValue(value).
 				setAlpha(defaultAlpha).
 				setBeta(defaultBeta).

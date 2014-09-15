@@ -11,4 +11,5 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
  */
 public interface FitnessFunction {
 	public double fitness(Genome genome);
+	public int evalsLeft();
 }
