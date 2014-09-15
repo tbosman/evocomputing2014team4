@@ -31,7 +31,7 @@ public class SimulateTestFunction {
 	}
 	
 	public void start() { 
-		MultiCrossEvaluation evaluation = new MultiCrossEvaluation();
+		EasomMioEvaluation evaluation = new EasomMioEvaluation();
 		evaluation.simulate = true; 
 		this.evaluation_ = evaluation;
 		

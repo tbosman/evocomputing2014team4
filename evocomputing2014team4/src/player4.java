@@ -3,6 +3,7 @@
 import org.vu.contest.ContestEvaluation;
 import org.vu.contest.ContestSubmission;
 import org.vu.evocomputing2014team4.algorithms.AbstractEvolutionaryAlgorithm;
+import org.vu.evocomputing2014team4.algorithms.CMAESEvolutionaryAlgorithm;
 import org.vu.evocomputing2014team4.algorithms.FirstEvolutionaryAlgorithm;
 import org.vu.evocomputing2014team4.algorithms.SecondEvolutionaryAlgorithm;
 
@@ -11,7 +12,7 @@ public class player4 implements ContestSubmission {
 	ContestEvaluation evaluation_;
 
 	public player4() {
-		algo = new SecondEvolutionaryAlgorithm(1024, 3072);
+		algo = new SecondEvolutionaryAlgorithm(1,1);
 	}
 
 

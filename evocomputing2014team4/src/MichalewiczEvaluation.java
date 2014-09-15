@@ -13,7 +13,7 @@ import org.vu.contest.ContestEvaluation;
 public class MichalewiczEvaluation implements ContestEvaluation 
 {
 	// Evaluations budget
-	private final static int EVALS_LIMIT_ = 10000;
+	private final static int EVALS_LIMIT_ = 1000000;
 	// The base performance. It is derived by doing random search on the sphere function (see function method) with the same
 	//  amount of evaluations
 	private final static double BASE_ = 5.417;//= E[] = -4.5736711112154325;
