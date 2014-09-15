@@ -46,7 +46,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		super();
 		this.populationSize = populationSize;
 		this.offspringSize = offspringSize;
-		this.mutator = new ParameterisedMutator(crossoverTypeMutationChance);
+		
 
 
 	}
@@ -215,13 +215,13 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private void init() {
 		this.fitnessFunction = new HashedFitnessFunction(evaluation_);
 		ParameterisedRandomInitialiser initialiser = new ParameterisedRandomInitialiser(fitnessFunction);
-
-
+		ParameterisedMutator mutator = new ParameterisedMutator(crossoverTypeMutationChance);
+		
+		mutator.setMaxPrecision((int) Math.log10(getEvals()));
+		
+		
+		
 		this.evalsLeft = this.evals;
-
-
-
-
 
 		//		if(!isRegular() && !isSeparable()) {
 		//			initialiser.defaultCrossover = CrossoverType.LOCAL_DISCRETE;
@@ -263,14 +263,14 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		//		initialiser.maxValue = 0;
 		if(isRegular()) {
 			initialiser.minValue = 0;
+//			mutator.setModuloPrecision(true);
 		}
 
 		this.startSize = this.populationSize*4; 
-
 		this.offspringSize = 4*this.populationSize;
 
-
 		this.initialiser = initialiser;
+		this.mutator = mutator;
 	}
 
 	@Override

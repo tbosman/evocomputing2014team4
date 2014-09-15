@@ -16,8 +16,10 @@ public class ParameterisedMutator implements Mutator {
 	private double minTemp = 0.25;
 	private double crossoverMutationChance= 0; 
 	private double precisionMutationChance = 0.25;
-	private int minPrecision = 1;
-	private int maxPrecision = 4;
+	private int minPrecision = 0;
+	private int maxPrecision = 7;
+	
+	private boolean moduloPrecision = true;
 	
 	private CrossoverType[] crossoverTypes = {CrossoverType.LOCAL_INTERMEDIARY, CrossoverType.LOCAL_DISCRETE, CrossoverType.NONE};
 	public ParameterisedMutator() {
@@ -33,7 +35,13 @@ public class ParameterisedMutator implements Mutator {
 
 	}
 
-
+	public void setMaxPrecision(int maxP) {
+		this.maxPrecision = maxP;
+	}
+	
+	public void setMinPrecision(int minP) {
+		this.minPrecision = minP;
+	}
 
 	public double getTemp() {
 		return temp;
@@ -147,7 +155,14 @@ public class ParameterisedMutator implements Mutator {
 		
 		int precision = genome.precision;
 		if(RandomSampler.getUniform() < precisionMutationChance ) {
-			precision = (precision+1)%(maxPrecision);
+			if(moduloPrecision) {
+						precision = (precision+1)%(maxPrecision);
+			}else { 
+				precision = Math.min(maxPrecision, precision+1);
+			}
+			if(precision < minPrecision) {
+				precision = minPrecision;
+			}
 //			precision = Math.max(genome.precision + (RandomSampler.getInt(3))-1, minPrecision);
 			
 		}
@@ -160,6 +175,11 @@ public class ParameterisedMutator implements Mutator {
 				createGenome();
 
 		return newGenome;
+	}
+
+
+	public void setModuloPrecision(boolean moduloPrecision) {
+		this.moduloPrecision = moduloPrecision;
 	}
 
 }
