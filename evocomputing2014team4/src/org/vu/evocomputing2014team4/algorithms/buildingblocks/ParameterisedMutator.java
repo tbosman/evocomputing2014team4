@@ -15,6 +15,9 @@ public class ParameterisedMutator implements Mutator {
 	private double maxTemp = 1;
 	private double minTemp = 0.25;
 	private double crossoverMutationChance= 0; 
+	private double precisionMutationChance = 0.1;
+	private int minPrecision = 1;
+	
 	private CrossoverType[] crossoverTypes = {CrossoverType.LOCAL_INTERMEDIARY, CrossoverType.LOCAL_DISCRETE, CrossoverType.NONE};
 	public ParameterisedMutator() {
 		// TODO Auto-generated constructor stub
@@ -140,11 +143,18 @@ public class ParameterisedMutator implements Mutator {
 		}else {
 			crossoverType = genome.crossoverType;
 		}
+		
+		int precision = genome.precision;
+		if(RandomSampler.getUniform() < precisionMutationChance) {
+			precision = Math.max(genome.precision + (RandomSampler.getInt(3))-1, minPrecision);
+			
+		}
 
 		Genome newGenome = new Genome.GenomeBuilder(genome).
 				setValue(newValue).
 				setSigma(newSigma).
 				setCrossoverType(crossoverType).
+				setPrecision(precision).
 				createGenome();
 
 		return newGenome;

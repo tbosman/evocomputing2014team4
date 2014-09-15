@@ -147,6 +147,16 @@ public class KMeansClustering {
 							minCluster = cluster; 
 						}
 					}
+					if(minCluster == null) {
+						System.out.println("#DBG: clusters.sz "+clusters.size());
+						System.out.print("#DBG: point.value:");
+						for(int i=1; i<10;i++) {
+							System.out.print(point.getGenome().value[i]+ ", ");
+						}
+						System.out.println();
+						
+						System.out.println("#DBG: prc: "+point.getGenome().precision);
+					}
 					minCluster.addMember(point);
 				}
 

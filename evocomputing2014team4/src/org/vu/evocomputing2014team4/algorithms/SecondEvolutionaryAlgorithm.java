@@ -224,14 +224,14 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 		//		this.addZeroVector  = true;
 
-		this.populationSize = 50;
+		this.populationSize = 20;
 
 		//		initialiser.maxValue = 0;
 		if(isRegular()) {
 			initialiser.minValue = 0;
 		}
 
-		this.startSize = getEvals()/2;
+		this.startSize = this.populationSize*4; 
 
 		this.offspringSize = 4*this.populationSize;
 

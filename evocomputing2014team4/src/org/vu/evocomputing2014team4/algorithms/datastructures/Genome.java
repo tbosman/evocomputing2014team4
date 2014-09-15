@@ -33,6 +33,7 @@ public class Genome {
 	final public double epsilonMax; //max stdev
 	final public double pi;//maximum rotational param
 	final public CrossoverType crossoverType;
+	final public int precision; 
 	/**
 	 * @param value
 	 * @param sigma
@@ -44,7 +45,8 @@ public class Genome {
 	 * @param pi
 	 */
 	private Genome(double[] value, double[] sigma, double[][] alpha, double tau,
-			double tauPrime, double beta, double epsilon0, double epsilonMax, double pi, CrossoverType crossoverType) {
+			double tauPrime, double beta, double epsilon0, double epsilonMax, double pi, 
+			CrossoverType crossoverType, int precision) {
 		super();
 		this.value = value;
 		this.sigma = sigma;
@@ -56,6 +58,10 @@ public class Genome {
 		this.epsilonMax = epsilonMax;
 		this.pi = pi;
 		this.crossoverType = crossoverType;
+		this.precision = precision;
+		if(precision == 0) {
+			new Exception("#DBG p=0").printStackTrace();
+		}
 	}
 
 	public String toString() {
@@ -99,7 +105,7 @@ public class Genome {
 		public double beta;//rotational learning rate
 		public double epsilon0; //minimum stdev 
 		public double epsilonMax;
-
+		public int precision;
 
 		public double pi;//maximum rotational param
 		public CrossoverType crossoverType;
@@ -120,10 +126,21 @@ public class Genome {
 			this.epsilonMax = fromGenome.epsilonMax;
 			this.pi = fromGenome.pi;
 			this.crossoverType = fromGenome.crossoverType;
+			this.precision = fromGenome.precision;
+			
 		}
 
 		public GenomeBuilder setValue(double[] value) {
-			this.value = value;
+			double precision = this.precision;
+			if(precision == 0) {
+				throw new Error("Precision = 0");
+			}
+			double[] fvalue = new double[10];
+			for(int i=0;i<10;i++) {
+				
+				fvalue[i] = Math.round(value[i]*precision)/precision;
+			}
+			this.value = fvalue;
 			return this;
 		}
 
@@ -166,14 +183,20 @@ public class Genome {
 			this.pi = pi;
 			return this;
 		}
+		
+		public GenomeBuilder setPrecision(int precision) {
+			this.precision = precision;
+			return this;
+		}
 
 		public GenomeBuilder setCrossoverType(CrossoverType crossoverType) {
 			this.crossoverType = crossoverType;
 			return this;
 		}
-
+	
+		
 		public Genome createGenome() {
-			return new Genome(value, sigma, alpha, tau, tauPrime, beta, epsilon0, epsilonMax, pi, crossoverType);
+			return new Genome(value, sigma, alpha, tau, tauPrime, beta, epsilon0, epsilonMax, pi, crossoverType, precision);
 		}
 	}
 

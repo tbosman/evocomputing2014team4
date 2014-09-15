@@ -86,7 +86,8 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 			
 		}
 		
-		Genome genome = new Genome.GenomeBuilder().			
+		Genome genome = new Genome.GenomeBuilder().		
+				setPrecision(RandomSampler.getInt(10)+5).
 				setValue(value).
 				setAlpha(defaultAlpha).
 				setBeta(defaultBeta).
@@ -98,6 +99,7 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 				setTauPrime(defaultTauPrime).
 				setCrossoverType(crossoverType).
 				createGenome();
+		
 		Individual newIndividual =(new Embryo(genome)).birth(fitnessFunction); 
 		population.add(newIndividual);
 		
