@@ -36,7 +36,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private boolean addZeroVector = false;
 
 
-	public boolean verbose = true;
+	public boolean verbose = false;
 
 	private double crossoverTypeMutationChance = 0.1;
 	
