@@ -53,103 +53,69 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		if(instantReturn) {
 			return;
 		}
-		int numIt = 5;
-		Population elitePopulation = new Population();
-		for(int it=0;it<numIt;it++) {
-			
-			evalsLeft = getEvals()/(numIt*2);
-			Population currentPopulation;
-			Population bestPopulation; 
-			if(it < numIt-1) {
-			 currentPopulation = initialiser.initialisePopulation(startSize);
-			 
-			 this.evalsLeft -= startSize;
-			}else {
-				currentPopulation = elitePopulation;
-				this.evalsLeft = (numIt+2)*getEvals()/(2*numIt);
-				this.populationSize *= 2;
-				this.offspringSize *= 3;
-			}
-			
-			bestPopulation = currentPopulation;
-			
-			if(bestList.size() >0 ) {//reset progress tracking list, but add global maximum
-				Collections.sort(bestList);
-				double best = bestList.get(bestList.size()-1);
-				bestList.clear();	
-//				bestList.add(best);
-			}
-			
-			
-			bestList.add(currentPopulation.getMaximumFitness());
 
-//			if(addZeroVector ) {
-//				Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
-//						setValue(new double[10]).createGenome();
-//				currentPopulation.add(new Individual(zeroGenome, fitnessFunction.fitness(zeroGenome)));
+		Population currentPopulation;
+		currentPopulation = initialiser.initialisePopulation(startSize);
+		this.evalsLeft -= startSize;
+		bestList.add(currentPopulation.getMaximumFitness());
+
+		//			if(addZeroVector ) {
+		//				Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
+		//						setValue(new double[10]).createGenome();
+		//				currentPopulation.add(new Individual(zeroGenome, fitnessFunction.fitness(zeroGenome)));
+		//			}
+
+		Breeder breeder = new DefaultBreeder();
+		//		SurvivorSelector survivorSelector = new TournamentSurvivorSelector(offspringSize/TOURNAMENT_SIZE);
+		SurvivorSelector survivorSelector = new KMeansClusteringSelector(populationSize/4);
+		
+		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
+		int iteration = 1;
+		while(evalsLeft > 0) {
+
+
+			Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
+
+			embryos = mutateAll(embryos, false);
+			Population newPopulation = raiseAll(embryos);
+
+//			int numClusters = 10; 
+//			boolean useHeuristicClusteringNumber = true; 
+//			if(useHeuristicClusteringNumber) {
+//				numClusters = 1+(evalsLeft/evals)*populationSize/2;
+//			}
+//
+//			if(isMultimodal() || !isRegular() || true) {
+//				survivorSelector = new KMeansClusteringSelector(numClusters);
 //			}
 
-			Breeder breeder = new DefaultBreeder();
-			//		SurvivorSelector survivorSelector = new TournamentSurvivorSelector(offspringSize/TOURNAMENT_SIZE);
-			SurvivorSelector survivorSelector = new KMeansClusteringSelector(populationSize/2);
-			currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
-			int iteration = 1;
-			while(evalsLeft > 0) {
+
+			bestList.add(newPopulation.getMaximumFitness());
 
 
-				Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
-
-				embryos = mutateAll(embryos, false);
-				Population newPopulation = raiseAll(embryos);
+			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
 
 
 
+			currentPopulation = newPopulation;
+
+			evalsLeft -= offspringSize;
+
+			adjustTemperature();
 
 
 
-
-				int numClusters = 10; 
-				boolean useHeuristicClusteringNumber = false; 
-				if(useHeuristicClusteringNumber) {
-					numClusters = 1+(evalsLeft/evals)*populationSize/2;
-				}
-
-				if(isMultimodal() || !isRegular() || true) {
-					survivorSelector = new KMeansClusteringSelector(numClusters);
-				}
-
-
-				bestList.add(newPopulation.getMaximumFitness());
-
-
-				newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
-
-
-
-				currentPopulation = newPopulation;
-				if(currentPopulation.getMaximumFitness() > bestPopulation.getMaximumFitness()) {
-					bestPopulation = currentPopulation;
-				}
-				
-				evalsLeft -= offspringSize;
-
-				adjustTemperature();
-				
-				
-
-				//			System.out.println("Iteration: "+iteration++ +" - best fitness: "+currentPopulation.getMaximumFitness());
-			}
-			elitePopulation.addAll(bestPopulation);
-			if(verbose) {
-				System.out.println("Temp: "+mutator.getTemp());
-			}
+			//			System.out.println("Iteration: "+iteration++ +" - best fitness: "+currentPopulation.getMaximumFitness());
+		}
+		if(verbose) {
+			System.out.println("Temp: "+mutator.getTemp());
 		}
 		//		System.out.println("#DBG Best/Temp"+ bestList.get(bestList.size()-1) + " - "+((DefaultMutator)mutator).getTemp());
 	}
 
 	private void adjustTemperature() {
-		
-		
+
+
 		//TODO heat/cool mutator
 		//		int lookback = 5;
 		int lookback = bestList.size()/5;
@@ -258,14 +224,14 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 		//		this.addZeroVector  = true;
 
-		this.populationSize = getEvals()/2000;
+		this.populationSize = 50;
 
 		//		initialiser.maxValue = 0;
 		if(isRegular()) {
 			initialiser.minValue = 0;
 		}
 
-		this.startSize = getEvals()/2000;
+		this.startSize = getEvals()/2;
 
 		this.offspringSize = 4*this.populationSize;
 

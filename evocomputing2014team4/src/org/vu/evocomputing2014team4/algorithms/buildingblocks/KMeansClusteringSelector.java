@@ -9,15 +9,17 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Individual;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
 
 public class KMeansClusteringSelector implements SurvivorSelector {	
-	int numClusters; 
+	int numClusters;
+	KMeansClustering clusterer; 
 	public KMeansClusteringSelector(int numClusters) {
 		this.numClusters = numClusters;
+		clusterer = new KMeansClustering(numClusters);
 	}
 
 	@Override
 	public Population selectSurvivors(Population population,
 			int desiredPopulationSize) {
-		KMeansClustering clusterer = new KMeansClustering(numClusters);
+		
 		List<Cluster> clusters = clusterer.findClusters(population);
 		
 		Population survivors = new Population(); 

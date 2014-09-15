@@ -170,14 +170,20 @@ function1 9.770103255488815
 function2 0.017153552911111515
 function3 8.652772623856006
 
-As of 14/9 19:44
+As of 14/9 07:44
+Utilises 5 restarts 
 ##SCORE##
 function1 9.801983977144392 
 function2 0.02417559940050295 
 function3 7.762763899125966
 
-
-
+s of 15/9 10:44
+removes restarts, pop = 50, startsize=evals/2
+kmeans retains cluster centers, fixed force numclusters
+##SCORE##
+function1 9.722642555094925 
+function2 0.028661728220063982 
+function3 2.5623156038677566
 
 
 
