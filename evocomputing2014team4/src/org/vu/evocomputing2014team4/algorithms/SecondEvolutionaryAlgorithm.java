@@ -217,7 +217,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		ParameterisedRandomInitialiser initialiser = new ParameterisedRandomInitialiser(fitnessFunction);
 		ParameterisedMutator mutator = new ParameterisedMutator(crossoverTypeMutationChance);
 		
-		mutator.setMaxPrecision((int) Math.log10(getEvals()));
+		mutator.setMaxPrecision(4);
 		
 		
 		
@@ -263,7 +263,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		//		initialiser.maxValue = 0;
 		if(isRegular()) {
 			initialiser.minValue = 0;
-//			mutator.setModuloPrecision(true);
+			mutator.setModuloPrecision(true);
 		}
 
 		this.startSize = this.populationSize*4; 
