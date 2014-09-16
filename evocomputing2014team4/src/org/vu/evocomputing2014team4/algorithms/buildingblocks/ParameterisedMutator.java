@@ -178,6 +178,10 @@ public class ParameterisedMutator implements Mutator {
 	}
 
 
+	public void setPrecisionMutationChance(double precisionMutationChance) {
+		this.precisionMutationChance = precisionMutationChance;
+	}
+
 	public void setModuloPrecision(boolean moduloPrecision) {
 		this.moduloPrecision = moduloPrecision;
 	}
