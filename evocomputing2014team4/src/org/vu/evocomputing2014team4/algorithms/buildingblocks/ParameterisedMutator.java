@@ -122,7 +122,7 @@ public class ParameterisedMutator implements Mutator {
 			
 			for(int i=0; i < genome.value.length; i++) {
 
-				newValue[i] =  genome.value[i] + temp*randSamp[i]*Math.pow(0.1, genome.precision-1);
+				newValue[i] =  genome.value[i] + temp*randSamp[i];
 				if(Math.abs(newValue[i]) > 5) {
 					double outOfBoundary = Math.abs(newValue[i]) - 5;//'Bounce' of the walls
 					newValue[i] = Math.signum(newValue[i])*(5 - outOfBoundary);
