@@ -12,4 +12,13 @@ public class Util {
 		
 		return out; 
 	}
+	
+	
+	public static double roundNBinary(double a, int n) {
+		int m = (int) Math.pow(2, n);
+		double out = (double)Math.round(a*m)/m;
+		
+		
+		return out; 
+	}
 }

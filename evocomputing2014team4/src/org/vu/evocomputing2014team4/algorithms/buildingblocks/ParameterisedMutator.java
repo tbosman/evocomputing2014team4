@@ -17,6 +17,14 @@ public class ParameterisedMutator implements Mutator {
 	private double crossoverMutationChance= 0; 
 	private double precisionMutationChance = 0.25;
 	private int minPrecision = 0;
+	public int getMinPrecision() {
+		return minPrecision;
+	}
+
+	public int getMaxPrecision() {
+		return maxPrecision;
+	}
+
 	private int maxPrecision = 7;
 	
 	private boolean moduloPrecision = true;

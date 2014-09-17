@@ -20,9 +20,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 	private int populationSize;
 	private int offspringSize; 
-	private Initialiser initialiser; 
+	private ParameterisedRandomInitialiser initialiser; 
 	private FitnessFunction fitnessFunction;
-	private Mutator mutator; 
+	private ParameterisedMutator mutator; 
 	private int evalsLeft;
 
 	boolean muPlusLambda = false; 
@@ -30,23 +30,24 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private int TOURNAMENT_SIZE = 10;
 
 
-	ArrayList<Double> bestList = new ArrayList<Double>();
+	ArrayList<Double> bestList = new ArrayList<Double>();//best per generation
+	ArrayList<Double> cumulativeBestList = new ArrayList<Double>();//best up until generation
 	private boolean instantReturn = false;
 	private int startSize;
 	private boolean addZeroVector = false;
 
 
-	public boolean verbose = true;
+	public boolean verbose = false;
 
 	private double crossoverTypeMutationChance = 0.1;
-	
+
 	private Individual globalBest;
 
 	public SecondEvolutionaryAlgorithm(int populationSize, int offspringSize) {
 		super();
 		this.populationSize = populationSize;
 		this.offspringSize = offspringSize;
-		
+
 
 
 	}
@@ -59,14 +60,15 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 		Population currentPopulation;
 		currentPopulation = initialiser.initialisePopulation(startSize);
-		
-		
-		
+
+
+
 		this.evalsLeft -= startSize;
 		bestList.add(currentPopulation.getMaximumFitness());
+		cumulativeBestList.add(currentPopulation.getMaximumFitness());
 		globalBest = (currentPopulation.get(0));
-		
-		
+
+
 
 		//			if(addZeroVector ) {
 		//				Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
@@ -77,48 +79,82 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		Breeder breeder = new DefaultBreeder();
 		//		SurvivorSelector survivorSelector = new TournamentSurvivorSelector(offspringSize/TOURNAMENT_SIZE);
 		SurvivorSelector survivorSelector = new KMeansClusteringSelector(populationSize/4);
-		
+
 		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
-		int iteration = 1;
+
 		if(verbose) {
 			System.out.println(" Init is done. ");
 		}
+
+
+		int era = getEvals()/10000;
+		era = Math.max(era, 2);
+		int iteration = 1;
 		while(fitnessFunction.evalsLeft() > 0) {
-			
-			if(iteration % 50 == 0) {
-				//Reset clusters and reseed
-//				((ParameterisedRandomInitialiser) initialiser).defaultPrecision++;
-//				((ParameterisedMutator)mutator).setMinPrecision(iteration/50);
-//				((ParameterisedMutator)mutator).setMaxPrecision(5*iteration/50);
-				if(verbose) {
+
+			if(iteration % era == 0) {
+
+				if(cumulativeBestList.get(cumulativeBestList.size()-era) < globalBest.fitness) {//improvement during this era
+					initialiser.defaultPrecision++;
+					mutator.setMinPrecision(mutator.getMinPrecision()+1);
+					mutator.setMaxPrecision(mutator.getMaxPrecision()+1);
+				}else if(cumulativeBestList.size() > 2*era && cumulativeBestList.get(cumulativeBestList.size()-2*era) < globalBest.fitness) {
+					//try another time with same settings
+				}else { // no improvement in 2 eras, decrease precision
+					if(initialiser.defaultPrecision > 3) {// we dont want precision to dip below zero
+						initialiser.defaultPrecision -= 2;
+						mutator.setMinPrecision(mutator.getMinPrecision()-2);
+						mutator.setMaxPrecision(mutator.getMaxPrecision()-2);
+					}else {//we hit rock bottom, reset tracking list and start over
 					
-					System.out.println("######## RESEED ########");
-					System.out.println("######## RESEED ########");
-					System.out.println("######## RESEED ########");
+						era = era;
+						currentPopulation = initialiser.initialisePopulation(offspringSize);
+						Collections.sort(currentPopulation);						
+						globalBest = currentPopulation.get(currentPopulation.size()-1); 
+						cumulativeBestList.add(globalBest.fitness);
+						
+						if(verbose) {
+							System.out.println("****Restarting search.****");
+						}
+					}
+					if(verbose) {
+
+						System.out.println("######## RESEED ########");
+						System.out.println("######## RESEED ########");
+						System.out.println("######## RESEED ########");
+					}
+					currentPopulation.addAll(initialiser.initialisePopulation(offspringSize));
+					survivorSelector = new KMeansClusteringSelector(populationSize/4);
 				}
-				currentPopulation.addAll(initialiser.initialisePopulation(offspringSize));
-				survivorSelector = new KMeansClusteringSelector(populationSize/4);
+
+				if(verbose) {
+					System.out.println("===###   ERA   ###===--");
+					System.out.println("Best fitness: "+globalBest.fitness);
+					System.out.println("Precision is set to: ["+mutator.getMinPrecision()+" , "+mutator.getMaxPrecision()+"]");
+				}
+
+				//				
 			}
 
 			Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
 
 			embryos = mutateAll(embryos, false);
 			Population newPopulation = raiseAll(embryos);
-			
-			
-
-//			int numClusters = 10; 
-//			boolean useHeuristicClusteringNumber = true; 
-//			if(useHeuristicClusteringNumber) {
-//				numClusters = 1+(evalsLeft/evals)*populationSize/2;
-//			}
-//
-//			if(isMultimodal() || !isRegular() || true) {
-//				survivorSelector = new KMeansClusteringSelector(numClusters);
-//			}
 
 
-			bestList.add(newPopulation.getMaximumFitness());
+
+			//			int numClusters = 10; 
+			//			boolean useHeuristicClusteringNumber = true; 
+			//			if(useHeuristicClusteringNumber) {
+			//				numClusters = 1+(evalsLeft/evals)*populationSize/2;
+			//			}
+			//
+			//			if(isMultimodal() || !isRegular() || true) {
+			//				survivorSelector = new KMeansClusteringSelector(numClusters);
+			//			}
+
+
+
 
 
 			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
@@ -129,27 +165,35 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 			evalsLeft -= offspringSize;
 
-			adjustTemperature();
+
 			Collections.sort(currentPopulation);
 			Individual best = currentPopulation.get(currentPopulation.size()-1);
 			if(best.fitness >globalBest.fitness) {
 				globalBest = best;
 			}
-			if(verbose) {
-				
-				
-				System.out.println("#DBG: IT"+iteration+" Precision of best: "+best.genome.precision);
-				System.out.print("#DBG: Sigm of best: ");
+			bestList.add(best.fitness);
+			cumulativeBestList.add(globalBest.fitness);
+			//			adjustTemperature();
+
+
+			if(verbose && false) {
+
+
+				System.out.println("IT"+iteration+" Precision of best in this gen: "+best.genome.precision);
+
+				System.out.print("Sigm of best: ");
 				for(double d : best.genome.sigma) {
 					System.out.print(Util.roundNDecimals(d,3) + ",");
 				}
-				System.out.print("#DBG: Value of best: ");
+				System.out.print("Value of best: ");
 				for(double d : best.genome.value) {
-					System.out.print(Util.roundNDecimals(d,best.genome.precision) + ",");
+					System.out.print(Util.roundNBinary(d,best.genome.precision) + ",");
 				}
 				System.out.println();
+				System.out.println("Fitness best generation/overall: "+best.fitness+" / "+globalBest.fitness);
+
 			}
-			
+
 			iteration++;
 
 
@@ -167,12 +211,15 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 				System.out.print(Util.roundNDecimals(d,globalBest.genome.precision) + ",");
 			}
 			System.out.println(" #DBG: fitness of Gbest: "+globalBest.fitness);
-		
-			
+
+
 		}
 		//		System.out.println("#DBG Best/Temp"+ bestList.get(bestList.size()-1) + " - "+((DefaultMutator)mutator).getTemp());
 	}
 
+	/**DEPRECATED
+	 * 
+	 */
 	private void adjustTemperature() {
 
 
@@ -202,9 +249,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 		List<Double> sortList = new ArrayList<Double>();
 		sortList.addAll(bestList);
-		Collections.sort(bestList);
-		double last = sortList.get(sortList.size()-1);
-		double best = bestList.get(bestList.size()-1);
+		Collections.sort(sortList);
+		double last = bestList.get(sortList.size()-1);
+		double best = sortList.get(bestList.size()-1);
 
 
 		//System.out.println(((DefaultMutator)mutator).getTemp());
@@ -242,11 +289,11 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		this.fitnessFunction = new HashedFitnessFunction(evaluation_);
 		ParameterisedRandomInitialiser initialiser = new ParameterisedRandomInitialiser(fitnessFunction);
 		ParameterisedMutator mutator = new ParameterisedMutator(crossoverTypeMutationChance);
-		
-		mutator.setMaxPrecision(10);
-		
-		
-		
+
+		mutator.setMaxPrecision(2);
+
+
+
 		this.evalsLeft = this.evals;
 
 		//		if(!isRegular() && !isSeparable()) {
@@ -258,8 +305,8 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		if(isMultimodal()) {
 			initialiser.defaultEpsilon0 = 0.001;
 		}
-		
-		
+
+
 
 
 
@@ -272,18 +319,6 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 
 
-		//		if(muPlusLambda) {
-		//			if(getEvals() <= 1000000) {
-		//				this.populationSize = 5;
-		//			}else {
-		//				this.populationSize = 20;
-		//			}
-		//			initialiser.minValue = -5;
-		//		}else {
-		////			this.addZeroVector  = true;
-		//		}
-
-		//		this.addZeroVector  = true;
 
 		this.populationSize = 50;
 
@@ -294,10 +329,12 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			mutator.setPrecisionMutationChance(0.5);//Regularity allows for precision to converge more quickly
 			mutator.setMinPrecision(2);
 			this.populationSize = 100;
-			
+
 		}else {
 			mutator.setPrecisionMutationChance(0.25*Math.log10(10000)/Math.log10(getEvals()));
 		}
+		
+		mutator.setPrecisionMutationChance(0.5);
 
 		this.startSize = this.populationSize*4; 
 		this.offspringSize = 4*this.populationSize;

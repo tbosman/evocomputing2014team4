@@ -16,6 +16,8 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 	public double minValue = -5;
 	public double maxValue = 5; 
 	
+	public int defaultPrecision = 0;
+	
 	double[][] defaultAlpha = new double[10][10];
 	double _defaultSigma = 0.1;
 	double[] defaultSigma; 
@@ -87,7 +89,7 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 		}
 		
 		Genome genome = new Genome.GenomeBuilder().		
-				setPrecision(0).
+				setPrecision(defaultPrecision).
 				setValue(value).
 				setAlpha(defaultAlpha).
 				setBeta(defaultBeta).
