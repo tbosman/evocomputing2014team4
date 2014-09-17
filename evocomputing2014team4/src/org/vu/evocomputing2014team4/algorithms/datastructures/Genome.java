@@ -61,6 +61,8 @@ public class Genome {
 		this.pi = pi;
 		this.crossoverType = crossoverType;
 		this.precision = precision;
+		
+		
 	}
 
 	public String toString() {
@@ -131,10 +133,14 @@ public class Genome {
 
 		public GenomeBuilder setValue(double[] value) {
 			double[] fvalue = new double[10];
+			
 			for(int i=0;i<10;i++) {
+//				if(value[i]> 5) {
+//					System.out.println("#DBG: Gen. out of bounds");
+//				}
+				
 				
 				fvalue[i] = Util.roundNDecimals(value[i], (int) precision);
-//				fvalue[i] = Math.round(value[i]*precision)/precision;
 			}
 			this.value = fvalue;
 			return this;

@@ -18,11 +18,14 @@ public class DefaultMonogamousCrossover implements MonogamousCrossover {
 		if(mother.length != father.length) {
 			throw new RuntimeException("Trying to average arrays of unequal size.");
 		}
-		double[] value = mother; 
+		double[] value = new double[10]; 
 		for(int i =0; i<value.length; i++) {
-			value[i] += father[i];
-			value[i] /= 2;
+			value[i] = (mother[i]+father[i])/2;
+			if(value[i] > 5) {
+				System.out.println("#DBG avg out of boudn."+mother[i]+"-"+father[i]+"-"+value[i]);
+			}
 		}
+		
 		return value;
 	}
 	
@@ -62,7 +65,7 @@ public class DefaultMonogamousCrossover implements MonogamousCrossover {
 	
 	@Override
 	public Embryo mate(Individual mother, Individual father) {
-		
+				
 		switch(mother.genome.crossoverType) {
 		case LOCAL_INTERMEDIARY:
 			return average(mother, father);

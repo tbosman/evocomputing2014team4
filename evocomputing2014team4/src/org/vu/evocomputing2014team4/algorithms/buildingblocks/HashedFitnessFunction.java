@@ -37,13 +37,16 @@ public class HashedFitnessFunction implements FitnessFunction {
 		}
 		
 		List<Double> valueList = arrayToList(genome.value);
+		
 		if(allEvaluated.containsKey(valueList)) {
 //			System.out.println("#DBG: Cached!");
 			return allEvaluated.get(valueList);
 		}
 		
-		Object fitness = evaluation.evaluate(genome.value);
+		Object fitness = evaluation.evaluate(genome.value.clone());
 		evalsLeft--;
+		
+		
 		if(fitness != null) {
 			
 			allEvaluated.put(valueList, (Double) fitness);

@@ -31,7 +31,7 @@ public class SimulateTestFunction {
 	}
 	
 	public void start() { 
-		AckleyEvaluationPI evaluation = new AckleyEvaluationPI();
+		DeceptiveEvaluation evaluation = new DeceptiveEvaluation();
 		evaluation.simulate = true; 
 		this.evaluation_ = evaluation;
 		

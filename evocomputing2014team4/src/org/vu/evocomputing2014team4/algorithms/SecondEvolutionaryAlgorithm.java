@@ -36,7 +36,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private boolean addZeroVector = false;
 
 
-	public boolean verbose = false;
+	public boolean verbose = true;
 
 	private double crossoverTypeMutationChance = 0.1;
 	
@@ -59,9 +59,14 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 		Population currentPopulation;
 		currentPopulation = initialiser.initialisePopulation(startSize);
+		
+		
+		
 		this.evalsLeft -= startSize;
 		bestList.add(currentPopulation.getMaximumFitness());
 		globalBest = (currentPopulation.get(0));
+		
+		
 
 		//			if(addZeroVector ) {
 		//				Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
@@ -75,6 +80,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		
 		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
 		int iteration = 1;
+		if(verbose) {
+			System.out.println(" Init is done. ");
+		}
 		while(fitnessFunction.evalsLeft() > 0) {
 
 
@@ -266,11 +274,11 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			initialiser.minValue = 0;
 			mutator.setModuloPrecision(false);
 			mutator.setPrecisionMutationChance(0.5);//Regularity allows for precision to converge more quickly
-//			mutator.setMinPrecision(2);
+			mutator.setMinPrecision(2);
 			this.populationSize = 100;
 			
 		}else {
-//			mutator.setPrecisionMutationChance(0.25*Math.log10(10000)/Math.log10(getEvals()));
+			mutator.setPrecisionMutationChance(0.25*Math.log10(10000)/Math.log10(getEvals()));
 		}
 
 		this.startSize = this.populationSize*4; 

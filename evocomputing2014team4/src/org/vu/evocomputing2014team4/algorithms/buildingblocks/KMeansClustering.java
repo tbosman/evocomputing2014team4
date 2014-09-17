@@ -138,6 +138,7 @@ public class KMeansClustering {
 				for(Cluster cluster : clusters) cluster.clear();
 
 				for(GenomeCarrier point : points) {//add point to closest cluster
+					
 					double minDistance = Double.MAX_VALUE; 
 					Cluster minCluster = null; 
 					for(Cluster cluster : clusters) {
@@ -158,6 +159,7 @@ public class KMeansClustering {
 						System.out.println("#DBG: prc: "+point.getGenome().precision);
 					}
 					minCluster.addMember(point);
+					
 				}
 
 				//recalculate centers and update converging tracking variable
@@ -189,7 +191,7 @@ public class KMeansClustering {
 							newPoint = gc.getGenome().value;
 						}
 					}
-					candidateClusters.add(new Cluster(newPoint));
+					candidateClusters.add(new Cluster(newPoint.clone()));
 				}
 			
 				int make = numClusters - clusters.size(); 
