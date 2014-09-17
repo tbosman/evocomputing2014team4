@@ -140,7 +140,7 @@ public class Genome {
 //				}
 				
 				
-				fvalue[i] = Util.roundNDecimals(value[i], (int) precision);
+				fvalue[i] = Util.roundNBinary(value[i], (int) precision);
 			}
 			this.value = fvalue;
 			return this;
