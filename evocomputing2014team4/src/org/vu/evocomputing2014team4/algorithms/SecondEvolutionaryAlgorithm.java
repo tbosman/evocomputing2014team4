@@ -84,12 +84,28 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			System.out.println(" Init is done. ");
 		}
 		while(fitnessFunction.evalsLeft() > 0) {
-
+			
+			if(iteration % 50 == 0) {
+				//Reset clusters and reseed
+//				((ParameterisedRandomInitialiser) initialiser).defaultPrecision++;
+//				((ParameterisedMutator)mutator).setMinPrecision(iteration/50);
+//				((ParameterisedMutator)mutator).setMaxPrecision(5*iteration/50);
+				if(verbose) {
+					
+					System.out.println("######## RESEED ########");
+					System.out.println("######## RESEED ########");
+					System.out.println("######## RESEED ########");
+				}
+				currentPopulation.addAll(initialiser.initialisePopulation(offspringSize));
+				survivorSelector = new KMeansClusteringSelector(populationSize/4);
+			}
 
 			Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
 
 			embryos = mutateAll(embryos, false);
 			Population newPopulation = raiseAll(embryos);
+			
+			
 
 //			int numClusters = 10; 
 //			boolean useHeuristicClusteringNumber = true; 
@@ -122,7 +138,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			if(verbose) {
 				
 				
-				System.out.println("#DBG: Precision of best: "+best.genome.precision);
+				System.out.println("#DBG: IT"+iteration+" Precision of best: "+best.genome.precision);
 				System.out.print("#DBG: Sigm of best: ");
 				for(double d : best.genome.sigma) {
 					System.out.print(Util.roundNDecimals(d,3) + ",");
@@ -133,6 +149,8 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 				}
 				System.out.println();
 			}
+			
+			iteration++;
 
 
 			//			System.out.println("Iteration: "+iteration++ +" - best fitness: "+currentPopulation.getMaximumFitness());
