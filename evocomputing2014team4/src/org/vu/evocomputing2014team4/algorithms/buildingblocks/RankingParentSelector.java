@@ -9,6 +9,12 @@ import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.ParentS
 import org.vu.evocomputing2014team4.algorithms.datastructures.Individual;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
 
+/**
+ * Uses ranking only based parent selection
+ * probabilities are linearly proportional to ranking
+ * @author tbosman
+ *
+ */
 public class RankingParentSelector implements ParentSelector {
 
 	double p = 0.5;

@@ -6,6 +6,12 @@ import org.vu.contest.ContestEvaluation;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.FitnessFunction;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
 
+
+/**
+ * Caches fitness evaluations in a hash table so that double request dont cost evaluations
+ * @author tbosman
+ *
+ */
 public class HashedFitnessFunction implements FitnessFunction {
 	ContestEvaluation evaluation;
 	int evalsLeft;

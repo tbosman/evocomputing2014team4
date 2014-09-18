@@ -8,6 +8,13 @@ import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.Survivo
 import org.vu.evocomputing2014team4.algorithms.datastructures.Individual;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
 
+
+/**
+ * Uses k means clustering to select survivors 
+ * The fittest survivor is selected from every cluster iteratively, mainly as a means of enforcing diversity  
+ * @author tbosman
+ *
+ */
 public class KMeansClusteringSelector implements SurvivorSelector {	
 	int numClusters;
 	KMeansClustering clusterer; 

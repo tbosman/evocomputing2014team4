@@ -4,16 +4,21 @@ import org.vu.evocomputing2014team4.algorithms.RandomSampler;
 import org.vu.evocomputing2014team4.algorithms.buildingblocks.interfaces.Mutator;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Genome;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Genome.CrossoverType;
-
+/**
+ * Mutates genomes 
+ * @author tbosman
+ *
+ */
 public class ParameterisedMutator implements Mutator {
 
-	private boolean useCovariance = true;
+	private boolean useCovariance = true;//use covariance adaptive
 
-	private double temp = 1; 
+	private double temp = 1; //Temperature is not used at this moment (18/9)
 	private double tempRate = 0.1;
-
 	private double maxTemp = 1;
 	private double minTemp = 0.25;
+	
+	
 	private double crossoverMutationChance= 0; 
 	private double precisionMutationChance = 0.25;
 	private int minPrecision = 0;
