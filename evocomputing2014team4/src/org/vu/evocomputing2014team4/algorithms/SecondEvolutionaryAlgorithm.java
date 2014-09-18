@@ -87,7 +87,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}
 
 
-		int era = getEvals()/10000;
+		int era = getEvals()/20000;
 		era = Math.max(era, 2);
 		int iteration = 1;
 		while(fitnessFunction.evalsLeft() > 0) {
@@ -98,7 +98,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 					initialiser.defaultPrecision++;
 					mutator.setMinPrecision(mutator.getMinPrecision()+1);
 					mutator.setMaxPrecision(mutator.getMaxPrecision()+1);
-				}else if(cumulativeBestList.size() > 2*era && cumulativeBestList.get(cumulativeBestList.size()-2*era) < globalBest.fitness) {
+				}else if(cumulativeBestList.size() > 3*era && cumulativeBestList.get(cumulativeBestList.size()-2*era) < globalBest.fitness) {
 					//try another time with same settings
 				}else { // no improvement in 2 eras, decrease precision
 					if(initialiser.defaultPrecision > 3) {// we dont want precision to dip below zero
