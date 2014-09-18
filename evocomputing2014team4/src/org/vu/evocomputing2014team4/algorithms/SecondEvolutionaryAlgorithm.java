@@ -16,6 +16,13 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Individual;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Population;
 import org.vu.evocomputing2014team4.algorithms.datastructures.Genome.CrossoverType;
 
+/**
+ * This is upper level implementation of the EA, bringing all ingredients together.
+ * Parameter settings should be done in the init() method and/or member variables 
+ * Inner workings of the algorithm are done in run()  
+ * @author tbosman
+ *
+ */
 public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 	private int populationSize;
@@ -27,29 +34,26 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 	boolean muPlusLambda = false; 
 
-	private int TOURNAMENT_SIZE = 10;
+	private int TOURNAMENT_SIZE = 10;//Deprecated
 
 
 	ArrayList<Double> bestList = new ArrayList<Double>();//best per generation
 	ArrayList<Double> cumulativeBestList = new ArrayList<Double>();//best up until generation
-	private boolean instantReturn = false;
-	private int startSize;
-	private boolean addZeroVector = false;
+	private boolean instantReturn = false;//For debugging purposes
+	private int startSize; //initialisationsize
+	private boolean addZeroVector = false; //For debugging purposes
 
 
-	public boolean verbose = false;
+	public boolean verbose = false;//Print output?
 
 	private double crossoverTypeMutationChance = 0.1;
 
-	private Individual globalBest;
+	private Individual globalBest;//Best individual up untill now, may be subject to resets when restarting search
 
-	public SecondEvolutionaryAlgorithm(int populationSize, int offspringSize) {
+	public SecondEvolutionaryAlgorithm(int populationSize, int offspringSize) { //these are not used directly as of now
 		super();
 		this.populationSize = populationSize;
 		this.offspringSize = offspringSize;
-
-
-
 	}
 
 	@Override
@@ -57,12 +61,13 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		if(instantReturn) {
 			return;
 		}
-
+		
+		//INIT population
 		Population currentPopulation;
 		currentPopulation = initialiser.initialisePopulation(startSize);
 
 
-
+		//Init tracking variable
 		this.evalsLeft -= startSize;
 		bestList.add(currentPopulation.getMaximumFitness());
 		cumulativeBestList.add(currentPopulation.getMaximumFitness());
@@ -70,30 +75,33 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 
 
-		//			if(addZeroVector ) {
-		//				Genome zeroGenome = new Genome.GenomeBuilder(currentPopulation.get(0).genome).
-		//						setValue(new double[10]).createGenome();
-		//				currentPopulation.add(new Individual(zeroGenome, fitnessFunction.fitness(zeroGenome)));
-		//			}
-
-		Breeder breeder = new DefaultBreeder();
-		//		SurvivorSelector survivorSelector = new TournamentSurvivorSelector(offspringSize/TOURNAMENT_SIZE);
-		SurvivorSelector survivorSelector = new KMeansClusteringSelector(populationSize/4);
-
+		//Set up crossover and selection classes
+		Breeder breeder = new DefaultBreeder();//<-- does parent selectio and crossover (just local as off now)
+		SurvivorSelector survivorSelector = new KMeansClusteringSelector(populationSize/4);//does survivor selection
 		currentPopulation = survivorSelector.selectSurvivors(currentPopulation, populationSize);
 
 		if(verbose) {
 			System.out.println(" Init is done. ");
 		}
 
-
-		int era = getEvals()/20000;
+		
+		// A generation is a cycle of breeding (= parent selection+crossover), mutation and survival selection
+		// This is all done in the while loop below
+		
+		//Era specifies the number of generations after which a checkup is done
+		//Based on performance it is decided if precision needs to be increased/decreased,
+		//The population needs to be reseeded (= add new random values),
+		//or the entire search restarted 
+		// May add some other tweaks here but none have proven consistently useful yet
+		
+		int era = getEvals()/5000;
 		era = Math.max(era, 2);
 		int iteration = 1;
 		while(fitnessFunction.evalsLeft() > 0) {
+			
 
+			//Era adjustments
 			if(iteration % era == 0) {
-
 				if(cumulativeBestList.get(cumulativeBestList.size()-era) < globalBest.fitness) {//improvement during this era
 					initialiser.defaultPrecision++;
 					mutator.setMinPrecision(mutator.getMinPrecision()+1);
@@ -137,35 +145,15 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			}
 
 			Iterable<Embryo> embryos = breeder.breed(currentPopulation, offspringSize);
-
 			embryos = mutateAll(embryos, false);
 			Population newPopulation = raiseAll(embryos);
-
-
-
-			//			int numClusters = 10; 
-			//			boolean useHeuristicClusteringNumber = true; 
-			//			if(useHeuristicClusteringNumber) {
-			//				numClusters = 1+(evalsLeft/evals)*populationSize/2;
-			//			}
-			//
-			//			if(isMultimodal() || !isRegular() || true) {
-			//				survivorSelector = new KMeansClusteringSelector(numClusters);
-			//			}
-
-
-
-
-
 			newPopulation = survivorSelector.selectSurvivors(newPopulation, populationSize);
-
-
-
 			currentPopulation = newPopulation;
 
 			evalsLeft -= offspringSize;
 
 
+			//update progress tracking variables/lists
 			Collections.sort(currentPopulation);
 			Individual best = currentPopulation.get(currentPopulation.size()-1);
 			if(best.fitness >globalBest.fitness) {
@@ -173,7 +161,6 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			}
 			bestList.add(best.fitness);
 			cumulativeBestList.add(globalBest.fitness);
-			//			adjustTemperature();
 
 
 			if(verbose && false) {
@@ -197,10 +184,8 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			iteration++;
 
 
-			//			System.out.println("Iteration: "+iteration++ +" - best fitness: "+currentPopulation.getMaximumFitness());
 		}
 		if(verbose) {
-			System.out.println("Temp: "+mutator.getTemp());
 			System.out.println("#DBG: Precision of Globalbest: "+globalBest.genome.precision);
 			System.out.print("#DBG: Sigm of Gbest: ");
 			for(double d : globalBest.genome.sigma) {
@@ -270,6 +255,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		return newPopulation;
 	}
 
+	// Mutates all embryos 
 	private Iterable<Embryo> mutateAll(Iterable<Embryo> embryos, boolean skipCrossover) {
 		ArrayList<Embryo> outEmbryos = new ArrayList<Embryo>();
 		for(Embryo current : embryos) {
@@ -294,13 +280,9 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 
 
-		this.evalsLeft = this.evals;
+//		this.evalsLeft = this.evals; //Deprecated
 
-		//		if(!isRegular() && !isSeparable()) {
-		//			initialiser.defaultCrossover = CrossoverType.LOCAL_DISCRETE;
-		//			initialiser.defaultCrossoverSet = true;
-		//			muPlusLambda = true;
-		//		}
+
 
 		if(isMultimodal()) {
 			initialiser.defaultEpsilon0 = 0.001;
@@ -308,25 +290,13 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 
 
-
-
-
-
-
-
-
-		int offspringMulti = 4; 
-
-
-
-
 		this.populationSize = 50;
 
 		//		initialiser.maxValue = 0;
 		if(isRegular()) {
-			initialiser.minValue = 0;
-			mutator.setModuloPrecision(false);
-			mutator.setPrecisionMutationChance(0.5);//Regularity allows for precision to converge more quickly
+			initialiser.minValue = 0;//= minimum value per element of vector
+			mutator.setModuloPrecision(false);//whether mutation is up-only or cyclic
+//			mutator.setPrecisionMutationChance(0.5);//Regularity allows for precision to converge more quickly
 			mutator.setMinPrecision(2);
 			this.populationSize = 100;
 
