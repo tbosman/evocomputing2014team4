@@ -94,8 +94,8 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		//or the entire search restarted 
 		// May add some other tweaks here but none have proven consistently useful yet
 		
-		int era = getEvals()/5000;
-		era = Math.max(era, 2);
+		int era = getEvals()/10000;
+		era = Math.max(era, 4);
 		int iteration = 1;
 		while(fitnessFunction.evalsLeft() > 0) {
 			
@@ -298,6 +298,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			mutator.setModuloPrecision(false);//whether mutation is up-only or cyclic
 //			mutator.setPrecisionMutationChance(0.5);//Regularity allows for precision to converge more quickly
 			mutator.setMinPrecision(2);
+			mutator.setMaxPrecision(4);
 			this.populationSize = 100;
 
 		}else {
