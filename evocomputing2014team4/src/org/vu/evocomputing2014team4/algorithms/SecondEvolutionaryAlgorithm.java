@@ -276,7 +276,10 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		this.fitnessFunction = new HashedFitnessFunction(evaluation_);
 		ParameterisedRandomInitialiser initialiser = new ParameterisedRandomInitialiser(fitnessFunction);
 		ParameterisedMutator mutator = new ParameterisedMutator(crossoverTypeMutationChance);
-
+		
+		
+		mutator.useCovariance = false;
+		
 		mutator.setMaxPrecision(2);
 
 

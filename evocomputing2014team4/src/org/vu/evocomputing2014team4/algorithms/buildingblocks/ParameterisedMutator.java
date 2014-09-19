@@ -11,7 +11,7 @@ import org.vu.evocomputing2014team4.algorithms.datastructures.Genome.CrossoverTy
  */
 public class ParameterisedMutator implements Mutator {
 
-	private boolean useCovariance = true;//use covariance adaptive
+	public boolean useCovariance = true;//use covariance adaptive
 
 	private double temp = 1; //Temperature is not used at this moment (18/9)
 	private double tempRate = 0.1;
