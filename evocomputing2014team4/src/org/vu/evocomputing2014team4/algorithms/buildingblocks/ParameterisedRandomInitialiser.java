@@ -19,7 +19,7 @@ public class ParameterisedRandomInitialiser implements Initialiser {
 	public int defaultPrecision = 0;
 	
 	double[][] defaultAlpha = new double[10][10];
-	double _defaultSigma = 0.1;
+	public double _defaultSigma = 0.1;
 	double[] defaultSigma; 
 	public double defaultEpsilon0 = 0.1; 
 	public double defaultEpsilonMax = 0.5;

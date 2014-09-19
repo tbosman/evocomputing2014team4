@@ -280,6 +280,8 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		
 		mutator.useCovariance = false;
 		
+		initialiser._defaultSigma = 0.25;
+		
 		mutator.setMaxPrecision(2);
 
 
@@ -305,6 +307,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 //			mutator.setPrecisionMutationChance(0.5);//Regularity allows for precision to converge more quickly
 			mutator.setMinPrecision(2);
 			mutator.setMaxPrecision(4);
+			mutator.useCovariance = true;
 			this.populationSize = 100;
 			era  = getEvals()/5000;
 
