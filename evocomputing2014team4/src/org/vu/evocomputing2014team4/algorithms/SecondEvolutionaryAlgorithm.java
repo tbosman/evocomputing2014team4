@@ -32,6 +32,8 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private ParameterisedMutator mutator; 
 	private int evalsLeft;
 
+	private int era; 
+	
 	boolean muPlusLambda = false; 
 
 	private int TOURNAMENT_SIZE = 10;//Deprecated
@@ -94,8 +96,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 		//or the entire search restarted 
 		// May add some other tweaks here but none have proven consistently useful yet
 		
-		int era = getEvals()/10000;
-		era = Math.max(era, 4);
+		
 		int iteration = 1;
 		while(fitnessFunction.evalsLeft() > 0) {
 			
@@ -282,6 +283,8 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 //		this.evalsLeft = this.evals; //Deprecated
 
+		era = getEvals()/10000;
+		era = Math.max(era, 5);
 
 
 		if(isMultimodal()) {
@@ -300,6 +303,7 @@ public class SecondEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 			mutator.setMinPrecision(2);
 			mutator.setMaxPrecision(4);
 			this.populationSize = 100;
+			era  = getEvals()/5000;
 
 		}else {
 			mutator.setPrecisionMutationChance(0.25*Math.log10(10000)/Math.log10(getEvals()));
